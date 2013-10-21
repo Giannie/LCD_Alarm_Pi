@@ -29,9 +29,11 @@ sudo cp /home/pi/LCD_Alarm_Pi/etc/* /etc
 sudo update-rc.d lcd_start.sh defaults 100
 
 sudo mkdir /mnt/raspbmc
-sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail\" >> /etc/fstab"
+if [ -z "$(grep "192.168.0.18/devices /mnt/raspbmc" /etc/fstab)" ]; then
+	sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail\" >> /etc/fstab"
+fi
 echo "Enter samba password:"
-read pass
+read -s pass
 printf username=pi'\n'password=$pass > .raspbmc_auth
 sudo mount -a
 sudo service lcd_start.sh start
