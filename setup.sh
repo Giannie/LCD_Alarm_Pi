@@ -32,6 +32,9 @@ sudo cp /home/pi/LCD_Alarm_Pi/usr\ local\ bin/* /usr/local/bin/
 sudo cp /home/pi/LCD_Alarm_Pi/etc/* /etc
 sudo update-rc.d lcd_start.sh defaults 100
 
+sudo chown mpd /etc/mpd.conf
+sudo chgrp audio /etc/mpd.conf
+
 sudo mkdir /mnt/raspbmc
 if [ -z "$(grep "192.168.0.18/devices /mnt/raspbmc" /etc/fstab)" ]; then
 	sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail\" >> /etc/fstab"
