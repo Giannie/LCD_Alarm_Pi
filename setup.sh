@@ -8,7 +8,11 @@ if [ -z "$(crontab -l | grep Alarm)" ]; then
 	line="# 0 7 * * * sh /usr/local/bin/alarmcron.sh > ~/cron.txt # Alarm"
 	(crontab -l; echo "$line" ) | crontab -
 fi
-sudo apt-get install mpd mpc python-pip
+sudo modprobe i2c-bcm2708 
+sudo modprobe i2c-dev
+sudo sh -c "echo i2c-bcm2708 >> /etc/modules"
+sudo sh -c "echo i2c-dev >> /etc/modules"
+sudo apt-get install mpd mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools
 sudo pip install python-crontab
 sudo pip install wiringpi
 git clone https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code
@@ -25,3 +29,8 @@ sudo mv /home/pi/LCD_Alarm_Pi/etc/* /etc
 sudo update-rc.d lcd_start.sh defaults 100
 
 sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail\" >> /etc/fstab"
+echo "Enter samba password:"
+read pass
+printf username=pi'\n'password=$pass > .raspbmc_auth
+sudo mount -a
+sudo service lcd_start.sh start
