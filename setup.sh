@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ "$(pwd)" != "/home/pi" ]; then
         echo "Run script from home directory"
