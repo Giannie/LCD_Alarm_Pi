@@ -21,11 +21,11 @@ mkdir logs
 mkdir logs/lcd
 mkdir logs/cron
 
-mv /home/pi/LCD_Alarm_Pi/LCD/* /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate
-sudo mv /home/pi/LCD_Alarm_Pi/etc\ logrotate.d/* /etc/logrotate.d/
-sudo mv /home/pi/LCD_Alarm_Pi/etc\ init.d/* /etc/init.d/
-sudo mv /home/pi/LCD_Alarm_Pi/usr\ local\ bin/* /usr/local/bin/
-sudo mv /home/pi/LCD_Alarm_Pi/etc/* /etc
+cp /home/pi/LCD_Alarm_Pi/LCD/* /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate
+sudo cp /home/pi/LCD_Alarm_Pi/etc\ logrotate.d/* /etc/logrotate.d/
+sudo cp /home/pi/LCD_Alarm_Pi/etc\ init.d/* /etc/init.d/
+sudo cp /home/pi/LCD_Alarm_Pi/usr\ local\ bin/* /usr/local/bin/
+sudo cp /home/pi/LCD_Alarm_Pi/etc/* /etc
 sudo update-rc.d lcd_start.sh defaults 100
 
 sudo mkdir /mnt/raspbmc
