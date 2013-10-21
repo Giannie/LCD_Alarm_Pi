@@ -44,3 +44,4 @@ if [ ${#a} -lt 10 ]; then
 fi
 sudo mount -a
 sudo service lcd_start.sh start
+sudo service mpd restart
