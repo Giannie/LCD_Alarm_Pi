@@ -36,7 +36,10 @@ if [ -z $string ]
         mpc volume 90
 fi
 sleep 3600
-mpc idle
+string="$(mpc | grep playing)"
+if [ $string ];then
+	mpc idle
+fi
 mpc random off
 mpc stop
 mpc clear
