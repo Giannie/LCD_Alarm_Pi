@@ -19,3 +19,9 @@ Copy playlist to home directory as Alarm Playlist.m3u. Run from home directory:
 Change ssh port:
 
 <code>sudo nano /etc/ssh/sshd_config</code>
+
+Reboot and run:
+
+<code>
+mpc update
+</code>
