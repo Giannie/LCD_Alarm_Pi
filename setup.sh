@@ -23,7 +23,7 @@ mkdir logs/cron
 
 sudo mv /home/pi/LCD_Alarm_Pi/etc\ init.d/* /etc/init.d/
 mv /home/pi/LCD_Alarm_Pi/home/* /home/pi
-mv /home/pi/LCD_Alarm_Pi/LCD/* ~/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate
+mv /home/pi/LCD_Alarm_Pi/LCD/* /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate
 sudo mv /home/pi/LCD_Alarm_Pi/usr\ local\ bin/* /usr/local/bin/
 sudo mv /home/pi/LCD_Alarm_Pi/etc/* /etc
 sudo update-rc.d lcd_start.sh defaults 100
