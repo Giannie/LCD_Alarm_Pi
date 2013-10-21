@@ -19,7 +19,7 @@ mpc volume 88
 sleep 15
 mpc volume 90
 string="$(mpc | grep playing)"
-if [ -z $string ]
+if [ -z "$string" ]
     then
         mpc load AlarmPlaylist.m3u
         mpc volume 80
@@ -37,7 +37,7 @@ if [ -z $string ]
 fi
 sleep 3600
 string="$(mpc | grep playing)"
-if [ $string ];then
+if [ "$string" ]; then
 	mpc idle
 fi
 mpc random off
