@@ -10,8 +10,12 @@ if [ -z "$(crontab -l | grep Alarm)" ]; then
 fi
 sudo modprobe i2c-bcm2708 
 sudo modprobe i2c-dev
-sudo sh -c "echo i2c-bcm2708 >> /etc/modules"
-sudo sh -c "echo i2c-dev >> /etc/modules"
+if [ -z "$(grep i2c-bcm2708 /etc/modules)" ]; then
+	sudo sh -c "echo i2c-bcm2708 >> /etc/modules"
+fi
+if [ -z "$(grep i2c-dev /etc/modules)" ]; then
+	sudo sh -c "echo i2c-dev >> /etc/modules"
+fi
 sudo apt-get install mpd mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools
 sudo pip install python-crontab
 sudo pip install wiringpi
@@ -32,8 +36,11 @@ sudo mkdir /mnt/raspbmc
 if [ -z "$(grep "192.168.0.18/devices /mnt/raspbmc" /etc/fstab)" ]; then
 	sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail\" >> /etc/fstab"
 fi
-echo "Enter samba password:"
-read -s pass
-printf username=pi'\n'password=$pass > .raspbmc_auth
+a="$(grep password .raspbmc_auth)"
+if [ ${#a} -lt 10 ]; then
+	echo "Enter samba password:"
+	read -s pass
+	printf username=pi'\n'password=$pass > .raspbmc_auth
+fi
 sudo mount -a
 sudo service lcd_start.sh start
