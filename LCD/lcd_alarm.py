@@ -74,7 +74,7 @@ while True:
             else:
                 lcd.backlight(lcd.OFF)
             lcd_on_prev = lcd_on
-        if button_test(n) and time.time() - press_before > wait_time/4.0:
+        if lcd_on and button_test(n) and time.time() - press_before > wait_time/4.0:
             if n == right:
                 colour = (colour + 1) % len(colours)
                 press_before = time.time()
@@ -172,6 +172,10 @@ while True:
                         sleep(0.1)
                     n = 0
             n = 0
+        else:
+            if n == up:
+                lcd_on = not(lcd_on)
+                press_before = time.time()
         sleep(0.1)
     except:
         print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken.", datetime.datetime.now().hour, datetime.datetime.now().minute
