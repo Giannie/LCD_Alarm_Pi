@@ -176,6 +176,7 @@ while True:
             if n == up:
                 lcd_on = not(lcd_on)
                 press_before = time.time()
+            n = 0
         sleep(0.1)
     except:
         print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken.", datetime.datetime.now().hour, datetime.datetime.now().minute
