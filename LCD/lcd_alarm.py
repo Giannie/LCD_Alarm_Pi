@@ -172,10 +172,9 @@ while True:
                         sleep(0.1)
                     n = 0
             n = 0
-        else:
-            if n == up:
-                lcd_on = not(lcd_on)
-                press_before = time.time()
+        elif n == 1 and press_before - time.time() > wait_time/4.0:
+            lcd_on = not(lcd_on)
+            press_before = time.time()
             n = 0
         sleep(0.1)
     except:
