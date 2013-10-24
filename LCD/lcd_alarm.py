@@ -74,7 +74,7 @@ while True:
             else:
                 lcd.backlight(lcd.OFF)
             lcd_on_prev = lcd_on
-        if lcd_on and button_test(n) and time.time() - press_before > wait_time/4.0:
+        if lcd_on and button_test(n) and time.time() - press_before > wait_time/4.0 and time.time() - press_before < 30:
             if n == right:
                 colour = (colour + 1) % len(colours)
                 press_before = time.time()
@@ -172,7 +172,10 @@ while True:
                         sleep(0.1)
                     n = 0
             n = 0
-        elif n == up and time.time() - press_before > wait_time/4.0:
+        elif lcd_on and time.time() - press_before > 30 and n == up:
+            press_before = time.time()
+            n=0
+        elif not(lcd_on) and n == up and time.time() - press_before > wait_time/4.0:
             lcd_on = not(lcd_on)
             press_before = time.time()
             n = 0
