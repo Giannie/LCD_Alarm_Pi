@@ -45,6 +45,8 @@ if [ ${#a} -lt 10 ]; then
 	read -s pass
 	printf username=pi'\n'password=$pass > .raspbmc_auth
 fi
+sudo service rpcbind start
+sudo update-rc.d rpcbind defaults
 sudo mount -a
 sudo service lcd_start.sh restart
 sudo service mpd restart
