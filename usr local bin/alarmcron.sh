@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sudo mount -a
 /usr/local/bin/plug_on.sh
 /usr/local/bin/plug_on.sh
 python ~/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate/alarm_off.py
