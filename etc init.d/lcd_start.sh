@@ -15,7 +15,7 @@
 
 start() {
 	if [ -z "$(pgrep -f lcd_alarm)" ]; then
-		/usr/bin/python /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate/lcd_alarm.py 2> /home/pi/logs/lcd/lcd_error.log 1> /home/pi/logs/lcd/out_lcd.log &
+		/usr/bin/python /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate/lcd_alarm.py 2>> /home/pi/logs/lcd/lcd_error.log 1>> /home/pi/logs/lcd/out_lcd.log &
 	fi
 	}
 
