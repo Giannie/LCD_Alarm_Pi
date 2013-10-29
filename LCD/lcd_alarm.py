@@ -37,7 +37,7 @@ lcd_string = alarm_time(crontab,alarm)
 press_before = 0
 while True:
     try:
-        lcd.i2c.readU8(lcd.MCP23017_GPIOA)
+        lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
         n = lcd.buttons()
         if lcd_on and time.time() - before > 5:
             time_date = cur_time()
