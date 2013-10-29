@@ -16,16 +16,6 @@ left = 16
 
 FNULL = open(os.devnull, 'w')
 
-def button_test(n):
-    if n in [1,2,4,8,16]:
-        return True
-    else:
-        return False
-
-def message_return(lcd,string):
-    lcd.message(string)
-    lcd.write(0x80)
-
 lcd = Adafruit_CharLCDPlate()
 
 lcd_string_prev = ''

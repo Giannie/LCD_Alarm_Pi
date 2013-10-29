@@ -4,6 +4,17 @@ import datetime
 import subprocess
 from crontab import CronTab
 from time import sleep
+from Adafruit_CharLCDPlate import Adafruit_CharLCDPlate
+
+def button_test(n):
+    if n in [1,2,4,8,16]:
+        return True
+    else:
+        return False
+
+def message_return(lcd,string):
+    lcd.message(string)
+    lcd.write(0x80)
 
 def get_time():
 	cron = CronTab('pi')
