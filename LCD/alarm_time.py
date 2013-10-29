@@ -12,6 +12,9 @@ def button_test(n):
     else:
         return False
 
+def gen_setting(setting,hour,minute):
+    setting + ' '*(16 - len(setting) + '\n' + add_zero(hour) + ':' + add_zero(minute) + " "*11
+
 def message_return(lcd,string):
     lcd.message(string)
     lcd.write(0x80)
