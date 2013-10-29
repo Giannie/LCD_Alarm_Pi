@@ -13,7 +13,7 @@ def button_test(n):
         return False
 
 def gen_setting(setting,hour,minute):
-    setting + ' '*(16 - len(setting) + '\n' + add_zero(hour) + ':' + add_zero(minute) + " "*11
+    return setting + ' '*(16 - len(setting) + '\n' + add_zero(hour) + ':' + add_zero(minute) + " "*11
 
 def message_return(lcd,string):
     lcd.message(string)
