@@ -36,8 +36,8 @@ sudo chown mpd /etc/mpd.conf
 sudo chgrp audio /etc/mpd.conf
 
 sudo mkdir /mnt/raspbmc
-if [ -z "$(grep "192.168.0.18:/export/users /mnt/raspbmc/02611632-508e-42a3-9d69-566bdca87be8" /etc/fstab)" ]; then
-	sudo sh -c "echo \"192.168.0.18:/export/users /mnt/raspbmc/02611632-508e-42a3-9d69-566bdca87be8 nfs udp,noatime,rsize=32768,wsize=32768,nolock,nofail 0 0\" >> /etc/fstab"
+if [ -z "$(grep "192.168.0.18/devices /mnt/raspbmc" /etc/fstab)" ]; then
+	sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail,nolock 0 0\" >> /etc/fstab"
 fi
 a="$(grep password .raspbmc_auth)"
 if [ ${#a} -lt 10 ]; then
