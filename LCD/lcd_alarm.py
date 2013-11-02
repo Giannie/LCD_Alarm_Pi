@@ -173,7 +173,7 @@ while True:
         sleep(0.1)
     except:
         print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken.", datetime.datetime.now().hour, datetime.datetime.now().minute
-        count = 1
+        count = True
         sleep(5)
         subprocess.call(["sh","/home/pi/detect_screen.sh"])
         while True:
@@ -181,14 +181,12 @@ while True:
                 lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
                 break
             except:
-                if count == 1:
-                    count += 1
+                if count:
+                    count = not(count)
                     print >> sys.stderr, "I can't access the screen yet."
                 else:
                     pass
                 sleep(10)
         lcd = Adafruit_CharLCDPlate()
-        if lcd_on:
-            lcd.backlight(colours[colour])
         lcd_string_prev = ''
         print >> sys.stderr, "I've accessed the screen, hopefully it will work now."
