@@ -26,7 +26,7 @@ mkdir logs/lcd
 mkdir logs/cron
 
 cp /home/pi/LCD_Alarm_Pi/LCD/* /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate
-sudo cp /home/pi/LCD_Alarm_Pi/etc\ logrotate.d/* /etc/logrotate.d/
+# sudo cp /home/pi/LCD_Alarm_Pi/etc\ logrotate.d/* /etc/logrotate.d/
 sudo cp /home/pi/LCD_Alarm_Pi/etc\ init.d/* /etc/init.d/
 sudo cp /home/pi/LCD_Alarm_Pi/usr\ local\ bin/* /usr/local/bin/
 sudo cp /home/pi/LCD_Alarm_Pi/etc/* /etc
