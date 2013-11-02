@@ -94,9 +94,12 @@ while True:
                 set_string_prev = ''
                 flash = True
                 set_bef = time.time()
+                press_before = time.time()
                 on = True
                 while True:
                     n = lcd.buttons()
+                    if time.time() - press_before > 30:
+                        break
                     set_string = gen_setting(settings[setting],hour,minute)
                     if set_string != set_string_prev:
                         message_return(lcd,set_string)
