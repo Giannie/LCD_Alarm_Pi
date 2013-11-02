@@ -188,6 +188,7 @@ while True:
                     pass
                 sleep(10)
         lcd = Adafruit_CharLCDPlate()
-        lcd.backlight(colours[colour])
+        if lcd_on:
+            lcd.backlight(colours[colour])
         lcd_string_prev = ''
         print >> sys.stderr, "I've accessed the screen, hopefully it will work now."
