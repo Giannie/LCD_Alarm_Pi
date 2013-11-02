@@ -41,7 +41,7 @@ sudo chgrp audio /etc/mpd.conf
 
 sudo mkdir /mnt/raspbmc
 if [ -z "$(grep "192.168.0.18/devices /mnt/raspbmc" /etc/fstab)" ]; then
-	sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail,nolock 0 0\" >> /etc/fstab"
+	sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail,nolock,uid=1000,gid=1000 0 0\" >> /etc/fstab"
 fi
 a="$(grep password .raspbmc_auth)"
 if [ ${#a} -lt 10 ]; then
