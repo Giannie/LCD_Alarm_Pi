@@ -64,6 +64,7 @@ while True:
                 lcd.backlight(colours[colour])
             else:
                 lcd.backlight(lcd.OFF)
+                lcd.clear()
             lcd_on_prev = lcd_on
         if lcd_on and button_test(n) and time.time() - press_before > wait_time/4.0 and time.time() - press_before < 30:
             if n == right:
@@ -192,5 +193,6 @@ while True:
             lcd.backlight(colours[colour])
         else:
             lcd.backlight(lcd.OFF)
+            lcd.clear()
         lcd_string_prev = ''
         print >> sys.stderr, "I've accessed the screen, hopefully it will work now."
