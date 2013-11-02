@@ -34,7 +34,7 @@ def add_zero(time):
             return str(time)
 
 def cur_time():
-    weekdays = ['MON','TUE','WED','THU','FRI','SAT','SUN']
+    weekdays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
     now = datetime.datetime.now()
     
     current_hour = add_zero(str(now.hour))
