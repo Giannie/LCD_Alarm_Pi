@@ -22,8 +22,9 @@ lcd_string_prev = ''
 wait_time = 1
 
 settings = ["Set hour:","Set minute:", "On or Off?"]
-menus = ["Set Alarm","Set Backlight","Power Management","Cancel"]
+menus = ["Set Alarm","Set Backlight","Power Management"]
 col_string = ['Red','Yellow','Green','Teal','Blue','Violet']
+pow_string = ['Shutdown','Reboot','Cancel']
 confirm = ["Yes","No"]
 con = "Are you sure?"
 
@@ -218,6 +219,60 @@ while True:
                                             break
                                     n = 0
                                     sleep(0.1)
+                            elif menu == 2:
+                                stay_again = True
+                                setting = 0
+                                set_string_prev = ''
+                                while stay_again:
+                                    n = lcd.buttons()
+                                    set_string = pow_string[setting] + ' '*(16 - len(pow_string[setting])) + '\n' + ' '*16
+                                    if set_string != set_string_prev:
+                                        message_return(lcd,set_string)
+                                        set_string_prev = set_string
+                                    if time.time() - press_before > 30:
+                                        stay = False
+                                        lcd_string_prev = ''
+                                        break
+                                    elif button_test(n) and time.time() - press_before > wait_time/2.0:
+                                        press_before = time.time()
+                                        if n == up:
+                                            setting = (setting + 1) % len(pow_string)
+                                        elif n == down:
+                                            setting = (setting - 1) % len(pow_string)
+                                        elif setting == 2 and n == select:
+                                            stay = False
+                                            break
+                                        elif n == select:
+                                            setting_confirm = 0
+                                            set_string_prev = ''
+                                            set_string = con + ' '*(16 - len(con)) + '\n' + confirm[setting_confirm] + ' '*(16-len(confirm[setting]))
+                                            while True:
+                                                n = lcd.buttons()
+                                                if set_string != set_string_prev:
+                                                    message_return(lcd,set_string)
+                                                    set_string_prev = set_string
+                                                if time.time() - press_before > 30:
+                                                    stay = False
+                                                    stay_again = False
+                                                    lcd_string_prev = ''
+                                                    break
+                                                elif button_test(n) and time.time() - press_before > wait_time/2.0:
+                                                    press_before = time.time()
+                                                    if n == up:
+                                                        setting = (setting_confirm + 1) % len(confirm)
+                                                    elif n == down:
+                                                        setting = (setting_confirm - 1) % len(confirm)
+                                                    elif n == select and setting_confirm != 2:
+                                                        if setting == 0:
+                                                            subprocess.call("poweroff")
+                                                        elif setting == 1:
+                                                            subprocess.call("reboot")
+                                                    elif n == select and setting_confirm == 2:
+                                                        stay = False
+                                                        stay_again = False
+                                                        break
+                                                n = 0
+                                                sleep(0.1)
                     n = 0
             n = 0
         elif lcd_on and time.time() - press_before > 30 and n == up:
