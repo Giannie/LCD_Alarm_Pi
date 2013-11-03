@@ -23,6 +23,7 @@ wait_time = 1
 
 settings = ["Set hour:","Set minute:", "On or Off?"]
 menus = ["Set Alarm","Set Backlight","Power Management","Cancel"]
+col_string = ['Red','Yellow','Green','Teal','Blue','Violet']
 confirm = ["Yes","No"]
 con = "Are you sure?"
 
@@ -190,6 +191,34 @@ while True:
                                                 press_before = time.time()
                                         sleep(0.1)
                                     n = 0
+                            elif menu == 1:
+                                setting = colour_def
+                                while True:
+                                    n = lcd.buttons(n)
+                                    if time.time() - press_before > 30:
+                                        stay = False
+                                        break
+                                    set_string = col_string[setting] + ' '*(16 - len(col_string[setting])) + '\n' + ' '*16
+                                    if set_string != set_string_prev:
+                                        message_return(lcd,set_string)
+                                        lcd.backlight(colours(setting))
+                                    if button_test(n) and time.time() - press_before > wait_time/2.0 and time.time() - press_before < 30:
+                                        sleep(0.1)
+                                        prss_before = time.time()
+                                        if n == up:
+                                            setting = (setting + 1) % len(col_string)
+                                        elif n == down:
+                                            setting = (setting - 1) % len(col_string)
+                                        elif n == select:
+                                            colour = setting
+                                            stay = False
+                                            break
+                                    elif time.time() - press_before > 30:
+                                        colour_prev = ''
+                                        stay = False
+                                        break
+                                    n = 0
+                                    sleep(0.1)
                     n = 0
             n = 0
         elif lcd_on and time.time() - press_before > 30 and n == up:
