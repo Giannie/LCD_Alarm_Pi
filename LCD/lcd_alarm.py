@@ -106,6 +106,7 @@ while True:
                         elif n == left:
                             menu = (menu - 1) % len(menus)
                         elif n == up or n == down:
+                            sleep(0.1)
                             break
                         elif n == select:
                             if menu == 0:
