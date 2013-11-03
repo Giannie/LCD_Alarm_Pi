@@ -103,7 +103,7 @@ while True:
             lcd_on_prev = lcd_on
         if lcd_on and button_test(n) and time.time() - press_before > wait_time/4.0 and time.time() - press_before < 30:
             if n == right:
-                subprocess.call(["mpc","play"])
+                mpc = True
                 press_before = time.time()
             elif n == up:
                 lcd_on = not(lcd_on)
@@ -117,7 +117,7 @@ while True:
                 lcd_string = time_date + '\n' + alarm
                 press_before = time.time()
             elif n == left:
-                subprocess.call(["mpc","pause"])
+                subprocess.call(["mpc","stop"])
                 press_before = time.time()
             elif n == select:
                 sleep(wait_time/2.0)
