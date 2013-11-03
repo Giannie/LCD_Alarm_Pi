@@ -290,7 +290,7 @@ while True:
         print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken.", datetime.datetime.now().hour, datetime.datetime.now().minute
         count = True
         sleep(5)
-        subprocess.call(["sh","/home/pi/detect_screen.sh"])
+        subprocess.call(["sh","/usr/local/bin/detect_screen.sh"])
         while True:
             try:
                 lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
