@@ -248,6 +248,7 @@ while True:
                                             set_string = con + ' '*(16 - len(con)) + '\n' + confirm[setting_confirm] + ' '*(16-len(confirm[setting]))
                                             while True:
                                                 n = lcd.buttons()
+                                                set_string = con + ' '*(16 - len(con)) + '\n' + confirm[setting_confirm] + ' '*(16-len(confirm[setting]))
                                                 if set_string != set_string_prev:
                                                     message_return(lcd,set_string)
                                                     set_string_prev = set_string
