@@ -87,7 +87,7 @@ while True:
                 lcd_string = time_date + '\n' + alarm
                 press_before = time.time()
             elif n == left:
-                subprocess.call(["mpc","stop"])
+                subprocess.call(["mpc","pause"])
                 press_before = time.time()
             elif n == select:
                 sleep(wait_time/2.0)
