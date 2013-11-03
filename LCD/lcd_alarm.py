@@ -189,6 +189,7 @@ while True:
                                                 press_before = time.time()
                                         sleep(0.1)
                                     n = 0
+                    n = 0
             n = 0
         elif lcd_on and time.time() - press_before > 30 and n == up:
             press_before = time.time()
