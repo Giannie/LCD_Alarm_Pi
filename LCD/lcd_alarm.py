@@ -96,7 +96,7 @@ while True:
                 while stay:
                     n = lcd.buttons()
                     if menu != menu_prev:
-                        menu_string = menus[menu] + ' '*(16-len(menus[menu]) + "\n" + ' '*16
+                        menu_string = menus[menu] + ' '*(16-len(menus[menu])) + "\n" + ' '*16
                         message_return(lcd,menu_string)
                         menu_prev = menu
                     if button_test(n) and time.time() - press_before > wait_time/4.0:
