@@ -22,6 +22,9 @@ lcd_string_prev = ''
 wait_time = 1
 
 settings = ["Set hour:","Set minute:", "On or Off?"]
+menus = ["Set Alarm","Set Backlight","Power Management","Cancel"]
+confirm = ["Yes","No"]
+con = "Are you sure?"
 
 colours = [lcd.RED , lcd.YELLOW, lcd.GREEN, lcd.TEAL, lcd.BLUE, lcd.VIOLET]
 colour_def = 5
@@ -86,86 +89,106 @@ while True:
                 press_before = time.time()
             elif n == select:
                 sleep(wait_time/2.0)
-                if not(lcd_on):
-                    lcd.backlight(colours[colour])
-                setting = 0
-                hour = 7
-                minute = 0
-                set_string_prev = ''
-                flash = True
-                set_bef = time.time()
+                menu = 0
+                menu_prev = ''
                 press_before = time.time()
-                on = True
-                while True:
+                stay = True
+                while stay:
                     n = lcd.buttons()
-                    if time.time() - press_before > 30:
-                        break
-                    set_string = gen_setting(settings[setting],hour,minute)
-                    if set_string != set_string_prev:
-                        message_return(lcd,set_string)
-                        set_string_prev = set_string
-                    if time.time() - set_bef > 0.5:
-                        if setting == 0:
-                            lcd.write(0xC0)
-                            if flash:
-                                message_return(lcd,'  ')
-                            else:
-                                message_return(lcd,add_zero(hour))
-                        elif setting == 1:
-                            lcd.write(0xC3)
-                            if flash:
-                                message_return(lcd,'  ')
-                            else:
-                                message_return(lcd,add_zero(minute))
-                        flash = not(flash)
-                        set_bef = time.time()
-                    if button_test(n) and time.time() - press_before > wait_time/2.0:
+                    if menu != menu_prev:
+                        menu_string = menus[menu] + ' '*(16-len(menus[menu]) + "\n" + ' '*16
+                        message_return(lcd,menu_string)
+                        menu_prev = menu
+                    if button_test(n) and time.time() - press_before > wait_time/4.0:
                         press_before = time.time()
-                        if n == select:
-                            message_return(lcd,set_string)
-                            set_alarm(hour,minute,on)
-                            lcd_string_prev = ''
-                            before -= 5
-                            sleep(wait_time/2.0)
-                            break
-                        elif n == right:
-                            message_return(lcd,set_string)
-                            setting = (setting + 1) % 2
+                        if n == right:
+                            menu = (menu + 1) % len(menus)
                         elif n == left:
-                            message_return(lcd,set_string)
-                            setting = (setting - 1) % 2
-                        elif setting == 0:
-                            if n == up:
-                                hour = (hour + 1) % 24
-                                set_string = gen_setting(settings[setting],hour,minute)
-                                message_return(lcd,set_string)
-                                flash = not(flash)
-                                set_string_prev = set_string
+                            menu = (menu - 1) % len(menus)
+                        elif n == up or n == down:
+                            break
+                        elif n == select:
+                            if menu == 0:
+                                setting = 0
+                                hour = 7
+                                minute = 0
+                                set_string_prev = ''
+                                flash = True
+                                set_bef = time.time()
                                 press_before = time.time()
-                            elif n == down:
-                                hour = (hour - 1) % 24
-                                set_string = gen_setting(settings[setting],hour,minute)
-                                message_return(lcd,set_string)
-                                flash = not(flash)
-                                set_string_prev = set_string
-                                press_before = time.time()
-                        elif setting == 1:
-                            if n == up:
-                                minute = (minute + 5) % 60
-                                set_string = gen_setting(settings[setting],hour,minute)
-                                message_return(lcd,set_string)
-                                flash = not(flash)
-                                set_string_prev = set_string
-                                press_before = time.time()
-                            elif n == down:
-                                minute = (minute - 5) % 60
-                                set_string = gen_setting(settings[setting],hour,minute)
-                                message_return(lcd,set_string)
-                                flash = not(flash)
-                                set_string_prev = set_string
-                                press_before = time.time()
-                        sleep(0.1)
-                    n = 0
+                                on = True
+                                while True:
+                                    n = lcd.buttons()
+                                    if time.time() - press_before > 30:
+                                        stay = False
+                                        break
+                                    set_string = gen_setting(settings[setting],hour,minute)
+                                    if set_string != set_string_prev:
+                                        message_return(lcd,set_string)
+                                        set_string_prev = set_string
+                                    if time.time() - set_bef > 0.5:
+                                        if setting == 0:
+                                            lcd.write(0xC0)
+                                            if flash:
+                                                message_return(lcd,'  ')
+                                            else:
+                                                message_return(lcd,add_zero(hour))
+                                        elif setting == 1:
+                                            lcd.write(0xC3)
+                                            if flash:
+                                                message_return(lcd,'  ')
+                                            else:
+                                                message_return(lcd,add_zero(minute))
+                                        flash = not(flash)
+                                        set_bef = time.time()
+                                    if button_test(n) and time.time() - press_before > wait_time/2.0:
+                                        press_before = time.time()
+                                        if n == select:
+                                            stay = False
+                                            message_return(lcd,set_string)
+                                            set_alarm(hour,minute,on)
+                                            lcd_string_prev = ''
+                                            before -= 5
+                                            sleep(wait_time/2.0)
+                                            break
+                                        elif n == right:
+                                            message_return(lcd,set_string)
+                                            setting = (setting + 1) % 2
+                                        elif n == left:
+                                            message_return(lcd,set_string)
+                                            setting = (setting - 1) % 2
+                                        elif setting == 0:
+                                            if n == up:
+                                                hour = (hour + 1) % 24
+                                                set_string = gen_setting(settings[setting],hour,minute)
+                                                message_return(lcd,set_string)
+                                                flash = not(flash)
+                                                set_string_prev = set_string
+                                                press_before = time.time()
+                                            elif n == down:
+                                                hour = (hour - 1) % 24
+                                                set_string = gen_setting(settings[setting],hour,minute)
+                                                message_return(lcd,set_string)
+                                                flash = not(flash)
+                                                set_string_prev = set_string
+                                                press_before = time.time()
+                                        elif setting == 1:
+                                            if n == up:
+                                                minute = (minute + 5) % 60
+                                                set_string = gen_setting(settings[setting],hour,minute)
+                                                message_return(lcd,set_string)
+                                                flash = not(flash)
+                                                set_string_prev = set_string
+                                                press_before = time.time()
+                                            elif n == down:
+                                                minute = (minute - 5) % 60
+                                                set_string = gen_setting(settings[setting],hour,minute)
+                                                message_return(lcd,set_string)
+                                                flash = not(flash)
+                                                set_string_prev = set_string
+                                                press_before = time.time()
+                                        sleep(0.1)
+                                    n = 0
             n = 0
         elif lcd_on and time.time() - press_before > 30 and n == up:
             press_before = time.time()
