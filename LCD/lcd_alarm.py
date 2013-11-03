@@ -71,11 +71,10 @@ while True:
                     n = 0
                     break
                 if n == select:
-                    subprocess.call(["mpc",mpc_settings[setting].lower()])
+                    subprocess.call(["mpc",mpc_settings[mpc_setting].lower()])
                     lcd_string_prev = ''
                     mpc = False
                     n = 0
-                    break
                 n = 0
             sleep(0.1)
     if lcd_on and time.time() - before > 5:
