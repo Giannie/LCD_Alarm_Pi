@@ -51,7 +51,7 @@ while True:
             mpc_setting = 0
             while mpc:
                 n = lcd.buttons()
-                mpc_string = mpc_settings[mpc_setting]
+                mpc_string = mpc_settings[mpc_setting] + ' '*(16 - len(mpc_settings[mpc_setting])) + '\n' + ' '*16
                 if mpc_string != mpc_string_prev:
                     message_return(lcd,mpc_string)
                     mpc_string_prev = mpc_string
@@ -68,12 +68,16 @@ while True:
                     if n == left or n == right:
                         mpc = False
                         lcd_string_prev = ''
+                        n = 0
                         break
                     if n == select:
                         subprocess.call(["mpc",mpc_settings[setting].lower()])
                         lcd_string_prev = ''
                         mpc = False
+                        n = 0
                         break
+                    n = 0
+                sleep(0.1)
         if lcd_on and time.time() - before > 5:
             time_date = cur_time()
             fun = alarm_time(crontab,alarm)
