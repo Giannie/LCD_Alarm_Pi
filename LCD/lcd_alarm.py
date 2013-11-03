@@ -199,7 +199,7 @@ while True:
                                 set_string = col_string[setting] + ' '*(16 - len(col_string[setting])) + '\n' + ' '*16
                                 if set_string != set_string_prev:
                                     message_return(lcd,set_string)
-                                    lcd.backlight(colours(setting))
+                                    lcd.backlight(colours[setting])
                                     set_string_prev = set_string
                                 if time.time() - press_before > 30:
                                     lcd_string_prev = ''
