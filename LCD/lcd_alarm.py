@@ -73,7 +73,7 @@ while True:
             lcd_on_prev = lcd_on
         if lcd_on and button_test(n) and time.time() - press_before > wait_time/4.0 and time.time() - press_before < 30:
             if n == right:
-                colour = (colour + 1) % len(colours)
+                subprocess.call(["mpc","play"])
                 press_before = time.time()
             elif n == up:
                 lcd_on = not(lcd_on)
