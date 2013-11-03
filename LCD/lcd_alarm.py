@@ -193,6 +193,7 @@ while True:
                                     n = 0
                             elif menu == 1:
                                 setting = colour_def
+                                set_string_prev = ''
                                 while True:
                                     n = lcd.buttons(n)
                                     if time.time() - press_before > 30:
@@ -202,6 +203,7 @@ while True:
                                     if set_string != set_string_prev:
                                         message_return(lcd,set_string)
                                         lcd.backlight(colours(setting))
+                                        set_string_prev = set_string
                                     if button_test(n) and time.time() - press_before > wait_time/2.0 and time.time() - press_before < 30:
                                         sleep(0.1)
                                         prss_before = time.time()
