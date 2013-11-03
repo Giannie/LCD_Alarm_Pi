@@ -196,18 +196,17 @@ while True:
                                 set_string_prev = ''
                                 while True:
                                     n = lcd.buttons(n)
-                                    if time.time() - press_before > 30:
-                                        lcd_string_prev = ''
-                                        stay = False
-                                        break
                                     set_string = col_string[setting] + ' '*(16 - len(col_string[setting])) + '\n' + ' '*16
                                     if set_string != set_string_prev:
                                         message_return(lcd,set_string)
                                         lcd.backlight(colours(setting))
                                         set_string_prev = set_string
-                                    if button_test(n) and time.time() - press_before > wait_time/2.0 and time.time() - press_before < 30:
-                                        sleep(0.1)
-                                        prss_before = time.time()
+                                    if time.time() - press_before > 30:
+                                        lcd_string_prev = ''
+                                        stay = False
+                                        break
+                                    elif button_test(n) and time.time() - press_before > wait_time/2.0 and time.time() - press_before < 30:
+                                        press_before = time.time()
                                         if n == up:
                                             setting = (setting + 1) % len(col_string)
                                         elif n == down:
@@ -217,10 +216,6 @@ while True:
                                             lcd_string_prev = ''
                                             stay = False
                                             break
-                                    elif time.time() - press_before > 30:
-                                        colour_prev = ''
-                                        stay = False
-                                        break
                                     n = 0
                                     sleep(0.1)
                     n = 0
