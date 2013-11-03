@@ -268,7 +268,8 @@ while True:
                                                     elif setting == 1:
                                                         subprocess.call("reboot")
                                                 elif n == select and setting_confirm == 2:
-                                                    lcd_string_prev = ''
+                                                    lcd_string = time_date + '\n' + alarm
+                                                    lcd_string_prev = ' '
                                                     stay = False
                                                     stay_again = False
                                                     break
