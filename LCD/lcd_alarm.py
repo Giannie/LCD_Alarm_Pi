@@ -43,7 +43,7 @@ lcd_string = alarm_time(crontab,alarm)
 press_before = 0
 mpc = False
 while True:
-        try:
+    try:
         lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
         n = lcd.buttons()
         if lcd_on and mpc:
