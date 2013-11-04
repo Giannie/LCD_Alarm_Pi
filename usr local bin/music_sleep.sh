@@ -5,7 +5,9 @@ if [ -z $1 ]; then
     exit
 fi
 sleep $1
-mpc idle
+if [ "$(mpc | grep playing)"]
+	mpc idle
+fi
 mpc stop
 mpc clear
 plug_off.sh
