@@ -333,9 +333,9 @@ while True:
                                                 elif button_test(n) and time.time() - press_before > wait_time/2.0:
                                                     press_before = time.time()
                                                     if n == up:
-                                                        setting = (setting_confirm + 1) % len(confirm)
+                                                        setting_confirm = (setting_confirm + 1) % len(confirm)
                                                     elif n == down:
-                                                        setting = (setting_confirm - 1) % len(confirm)
+                                                        setting_confirm = (setting_confirm - 1) % len(confirm)
                                                     elif n == select and setting_confirm != 2:
                                                         if setting == 0:
                                                             subprocess.call("poweroff")
