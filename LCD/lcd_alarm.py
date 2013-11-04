@@ -106,6 +106,7 @@ while True:
                             n = 0
                     elif n == select and mpc_setting == 6:
                         mpc = False
+                        lcd_string_prev = ''
                         n=0
                         proc = subprocess.Popen(["pgrep","-f","sleep"], stdout=subprocess.PIPE)
                         output = proc.stdout.read()
