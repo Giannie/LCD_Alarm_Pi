@@ -97,7 +97,8 @@ while True:
                             elif n == down:
                                 sleep_time -= 5
                             elif n == select:
-                                subprocess.Popen(["music_sleep.sh",str(sleep_time)])
+                                if sleep_time != 0:
+                                    subprocess.Popen(["music_sleep.sh",str(sleep_time)])
                                 mpc = False
                                 lcd_string_prev = ''
                                 break
@@ -301,6 +302,7 @@ while True:
                                     elif n == down:
                                         setting = (setting - 1) % len(pow_string)
                                     elif setting == 2 and n == select:
+                                        lcd_string_prev = ''
                                         stay = False
                                         break
                                     elif n == select:
@@ -310,6 +312,8 @@ while True:
                                         while True:
                                             n = lcd.buttons()
                                             set_string = con + ' '*(16 - len(con)) + '\n' + confirm[setting_confirm] + ' '*(16-len(confirm[setting]))
+                                            if time.time() - before > 5:
+                                                print setting_
                                             if set_string != set_string_prev:
                                                 message_return(lcd,set_string)
                                                 set_string_prev = set_string
@@ -330,14 +334,7 @@ while True:
                                                     elif setting == 1:
                                                         subprocess.call("reboot")
                                                 elif n == select and setting_confirm == 2:
-                                                    time_date = cur_time
-                                                    fun = alarm_time(crontab,alarm)
-                                                    crontab = fun[0]
-                                                    alarm = fun[1]
-                                                    lcd_string = time_date + '\n' + alarm
-                                                    print lcd_string
                                                     lcd_string_prev = ' '
-                                                    message_return(lcd,lcd_string)
                                                     stay = False
                                                     stay_again = False
                                                     break
