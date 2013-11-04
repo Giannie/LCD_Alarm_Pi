@@ -22,7 +22,7 @@ lcd_string_prev = ''
 wait_time = 1
 
 settings = ["Set hour:","Set minute:", "On or Off?"]
-mpc_settings = ["Play","Pause","Stop","Next","Prev"]
+mpc_settings = ["Play","Pause","Stop","Next","Prev","Sleep"]
 menus = ["Set Alarm","Set Backlight","Power Management"]
 col_string = ['Red','Yellow','Green','Teal','Blue','Violet']
 pow_string = ['Shutdown','Reboot','Cancel']
@@ -63,18 +63,45 @@ while True:
                     press_before = time.time()
                     if n == up:
                         mpc_setting = (mpc_setting + 1) % len(mpc_settings)
-                    if n == down:
+                    elif n == down:
                         mpc_setting = (mpc_setting - 1) % len(mpc_settings)
-                    if n == left or n == right:
+                    elif n == left or n == right:
                         mpc = False
                         lcd_string_prev = ''
                         n = 0
                         break
-                    if n == select:
+                    elif n == select and mpc_setting != 5:
                         subprocess.call(["mpc",mpc_settings[mpc_setting].lower()])
                         lcd_string_prev = ''
                         mpc = False
                         n = 0
+                    elif n == select and mpc_setting == 5:
+                        n = 0
+                        sleep_time = 0
+                        sleep_string_prev = ''
+                        while True:
+                            n = lcd.buttons()
+                            sleep_string = "Sleep for" + ' '*7 + '\n' + str(sleep_time) + "minutes" + ' '*(16 - len(str(sleep_time + "minutes")))
+                            if sleep_string != sleep_string_prev:
+                                message_return(lcd,sleep_string)
+                                sleep_string_prev = sleep_sting
+                            if time.time() - press_before > 30:
+                                mpc = False
+                                lcd_string_prev = ''
+                                break
+                            elif button_test(n) and time.time() - press_before > wait_time/2.0:
+                                press_before = time.time()
+                                if n == up:
+                                    sleep_time += 5
+                                elif n == down:
+                                    sleep_time -= 5
+                                elif n == select:
+                                    subprocess.Popen(["music_sleep.sh",str(sleep_time)])
+                                    mpc = False
+                                    lcd_string_prev = ''
+                                    break
+                            sleep(0.1)
+                            n = 0
                     n = 0
                 sleep(0.1)
         if lcd_on and time.time() - before > 5:
