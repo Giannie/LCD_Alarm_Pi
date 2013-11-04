@@ -16,6 +16,10 @@ if [ -z "$(crontab -l | grep "Check WiFi")" ]; then
 	line="* * * * * sudo /usr/local/bin/check-wifi.sh # Check WiFi"
 	(crontab -l; echo "$line" ) | crontab -
 fi
+if [ -z "$(crontab -l | grep "Check Samba Mount")" ]; then
+	line="* * * * * if [ -z "$(ls /mnt/raspbmc/02611632-508e-42a3-9d69-566bdca87be8/)" ]; then sudo mount -a; fi # Check Samba Mount"
+	(crontab -l; echo "$line" ) | crontab -
+fi
 sudo modprobe i2c-bcm2708 
 sudo modprobe i2c-dev
 if [ -z "$(grep i2c-bcm2708 /etc/modules)" ]; then
