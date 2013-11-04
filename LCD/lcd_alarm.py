@@ -336,12 +336,12 @@ while True:
                                                         setting_confirm = (setting_confirm + 1) % len(confirm)
                                                     elif n == down:
                                                         setting_confirm = (setting_confirm - 1) % len(confirm)
-                                                    elif n == select and setting_confirm != 2:
+                                                    elif n == select and setting_confirm != 1:
                                                         if setting == 0:
                                                             subprocess.call("poweroff")
                                                         elif setting == 1:
                                                             subprocess.call("reboot")
-                                                    elif n == select and setting_confirm == 2:
+                                                    elif n == select and setting_confirm == 1:
                                                         lcd_string_prev = ' '
                                                         stay = False
                                                         stay_again = False
