@@ -22,7 +22,7 @@ lcd_string_prev = ''
 wait_time = 1
 
 settings = ["Set hour:","Set minute:", "On or Off?"]
-mpc_settings = ["Play","Pause","Stop","Next","Prev","Sleep"]
+mpc_settings = ["Play","Pause","Stop","Next","Prev","Sleep","Cancel Sleep"]
 menus = ["Set Alarm","Set Backlight","Power Management"]
 col_string = ['Red','Yellow','Green','Teal','Blue','Violet']
 pow_string = ['Shutdown','Reboot','Cancel']
@@ -70,7 +70,7 @@ while True:
                         lcd_string_prev = ''
                         n = 0
                         break
-                    elif n == select and mpc_setting != 5:
+                    elif n == select and mpc_setting < 5:
                         subprocess.call(["mpc",mpc_settings[mpc_setting].lower()])
                         lcd_string_prev = ''
                         mpc = False
@@ -104,6 +104,15 @@ while True:
                                     break
                             sleep(0.1)
                             n = 0
+                    elif n == select and mpc_setting == 6:
+                        mpc = False
+                        n=0
+                        proc = subprocess.Popen(["pgrep","-f","sleep"], stdout=subprocess.PIPE)
+                        output = proc.stdout.read()
+                        output = output.replace('\n',' ')[:-1]
+                        output = output.split(' ')
+                        command = ["kill"] + output
+                        subprocess.call(command)
                     n = 0
                 sleep(0.1)
         if lcd_on and time.time() - before > 5:
