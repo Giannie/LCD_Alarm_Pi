@@ -82,7 +82,7 @@ while True:
                     line1 = "Sleep after"
                     while True:
                         n = lcd.buttons()
-                        sleep_string = line1 + ' '*(16-len(line1)) + '\n' + str(sleep_time) + "minutes" + ' '*(16 - len(str(sleep_time) + "minutes"))
+                        sleep_string = line1 + ' '*(16-len(line1)) + '\n' + str(sleep_time) + " minutes" + ' '*(16 - len(str(sleep_time) + " minutes"))
                         if sleep_string != sleep_string_prev:
                             message_return(lcd,sleep_string)
                             sleep_string_prev = sleep_string
