@@ -12,6 +12,10 @@ if [ -z "$(crontab -l | grep "LCD Logging")" ]; then
 	line="0 17 * * 0 sudo /usr/local/bin/lcd_logging.sh # LCD Logging"
 	(crontab -l; echo "$line" ) | crontab -
 fi
+if [ -z "$(crontab -l | grep “Check “WiFi)” ]; then
+	line="* * * * * sudo /usr/local/bin/check-wifi.sh # Check WiFi"
+	(crontab -l; echo "$line" ) | crontab -
+fi
 sudo modprobe i2c-bcm2708 
 sudo modprobe i2c-dev
 if [ -z "$(grep i2c-bcm2708 /etc/modules)" ]; then
