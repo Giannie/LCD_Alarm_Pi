@@ -335,6 +335,7 @@ while True:
                                                     crontab = fun[0]
                                                     alarm = fun[1]
                                                     lcd_string = time_date + '\n' + alarm
+                                                    print lcd_string
                                                     lcd_string_prev = ' '
                                                     message_return(lcd,lcd_string)
                                                     stay = False
