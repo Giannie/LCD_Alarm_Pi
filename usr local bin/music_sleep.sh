@@ -5,7 +5,7 @@ if [ -z $1 ]; then
     exit
 fi
 sleep $1
-if [ "$(mpc | grep playing)"]
+if [ "$(mpc | grep playing)" ]
 then
 	mpc idle
 fi
