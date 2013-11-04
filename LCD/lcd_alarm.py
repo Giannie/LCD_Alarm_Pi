@@ -302,8 +302,13 @@ while True:
                                                         elif setting == 1:
                                                             subprocess.call("reboot")
                                                     elif n == select and setting_confirm == 2:
+                                                        time_date = cur_time
+                                                        fun = alarm_time(crontab,alarm)
+                                                        crontab = fun[0]
+                                                        alarm = fun[1]
                                                         lcd_string = time_date + '\n' + alarm
                                                         lcd_string_prev = ' '
+                                                        message_return(lcd,lcd_string)
                                                         stay = False
                                                         stay_again = False
                                                         break
