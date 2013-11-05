@@ -145,9 +145,11 @@ def mpc_playlists():
     return playlists
 
 def mpc_load(playlist):
+    subprocess.call(["mpc","clear"])
     subprocess.call(["mpc","load",playlist])
 
 def mpc_add(path):
+    subprocess.call(["mpc","clear"])
     subprocess.call(["mpc","add",path])
 
 def mpc_play():
