@@ -176,6 +176,7 @@ while True:
                                                 mpc_play()
                                                 stay = False
                                                 mpc = False
+                                                lcd_string_prev = ''
                                                 break
                                         n = 0
                                         sleep(0.1)
