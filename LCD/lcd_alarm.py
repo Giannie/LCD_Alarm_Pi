@@ -128,6 +128,7 @@ while True:
                         n = lcd.buttons()
                         if type_set != type_set_prev:
                             type_string = line1 + ' '*(16 - len(line1)) + '\n' + type_choice[type_set] + ' '*(16 - len(type_choice[type_set]))
+                            messge_return(lcd,type_string)
                             type_set_prev = type_set
                         if time.time() - press_before > 30:
                             stay = False
@@ -148,12 +149,13 @@ while True:
                                     n = 0
                                     play_set = 0
                                     play_set_prev = ''
-                                    line1 = "Choose Playlists:"
+                                    line1 = "Choose Playlist:"
                                     playlists = mpc_playists()
                                     while True:
                                         n = lcd.buttons()
                                         if play_set != play_set_prev:
                                             play_string = line1 + ' '*(16 - len(line1)) + '\n' + playlists[play_set] + ' '*(16 - len(playists[play_set]))
+                                            message_return(lcd,play_string)
                                             play_set_prev = play_set
                                         if time.time() - press_before > 30:
                                             stay = False
