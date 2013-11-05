@@ -150,7 +150,7 @@ while True:
                                     play_set = 0
                                     play_set_prev = ''
                                     line1 = "Choose Playlist:"
-                                    playlists = mpc_playists()
+                                    playlists = mpc_playlists()
                                     while True:
                                         n = lcd.buttons()
                                         if play_set != play_set_prev:
