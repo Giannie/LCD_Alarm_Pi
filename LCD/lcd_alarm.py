@@ -98,8 +98,8 @@ while True:
                                 sleep_time -= 5
                             elif n == select:
                                 if sleep_time != 0:
-                                    print sleep_time
-                                    subprocess.Popen(["/usr/local/bin/music_sleep.sh","1200"])
+                                    print str(60*sleep_time)
+                                    subprocess.Popen(["/usr/local/bin/music_sleep.sh",str(60*sleep_time)])
                                 mpc = False
                                 lcd_string_prev = ''
                                 break
