@@ -28,7 +28,7 @@ fi
 if [ -z "$(grep i2c-dev /etc/modules)" ]; then
 	sudo sh -c "echo i2c-dev >> /etc/modules"
 fi
-sudo apt-get install mpd mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools
+sudo apt-get install mpd mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools wicd-curses
 sudo pip install python-crontab
 sudo pip install wiringpi
 git clone https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code
