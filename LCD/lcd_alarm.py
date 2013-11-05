@@ -21,9 +21,10 @@ lcd = Adafruit_CharLCDPlate()
 lcd_string_prev = ''
 wait_time = 1
 
+ip_settings = ["Wifi","Ethernet"]
 settings = ["Set hour:","Set minute:", "On or Off?"]
 mpc_settings = ["Play","Pause","Stop","Next","Prev","Sleep","Cancel Sleep"]
-menus = ["Set Alarm","Set Backlight","Power Management"]
+menus = ["Set Alarm","Set Backlight","Power Management","IP Addresses"]
 col_string = ['Red','Yellow','Green','Teal','Blue','Violet']
 pow_string = ['Shutdown','Reboot','Cancel']
 confirm = ["Yes","No"]
@@ -348,6 +349,44 @@ while True:
                                                         break
                                                 n = 0
                                                 sleep(0.1)
+                            elif menu == 3:
+                                stay_again= True
+                                ip_set = 0
+                                ip_set_prev = ''
+                                while stay_again:
+                                    if ip_set != ip_set_prev:
+                                        n = lcd.buttons()
+                                        if ip_set == 0:
+                                            p1 = subprocess.Popen(["ifconfig","wlan0"],stdout=subprocess.PIPE)
+                                        elif ip_set == 1:
+                                            p1 = subprocess.Popen(["ifconfig","eth0"],stdout=subprocess.PIPE)
+                                        p2 = subprocess.Popen(["grep","inet"],stdin=p1.stdout,stdout=subprocess.PIPE)
+                                        ip_addr = p2.stdout.read()
+                                        if len(ip_addr) == 0:
+                                            ip_addr = "Not connected"
+                                        else:
+                                            ip_addr = ip_addr.split(' ')
+                                            ip_addr = ip_addr[11][5:]
+                                        ip_str = ip_settings[ip_set] + ' '*(16 - len(ip_settings[ip_set])) + '\n' + ip_addr + ' '*(16 - len(ip_addr))
+                                        message_return(lcd,ip_str)
+                                    if time.time() - press_before > 30:
+                                        stay = False
+                                        stay_again = False
+                                        lcd_string_prev = ''
+                                        break
+                                    elif button_test(n) and time.time() - press_before > wait_time/2.0:
+                                        press_before = time.time()
+                                        if n == up:
+                                            ip_set = (ip_set + 1) % len(ip_settings)
+                                        elif n == down:
+                                            ip_set = (ip_set - 1) % len(ip_settings)
+                                        elif n == select or n == left or n == right:
+                                            stay = False
+                                            stay_again = False
+                                            lcd_string_prev = ''
+                                            break
+                                    n = 0
+                                    sleep(0.1)
                     n = 0
             n = 0
         elif lcd_on and time.time() - press_before > 30 and n == up:
