@@ -128,7 +128,7 @@ while True:
                         n = lcd.buttons()
                         if type_set != type_set_prev:
                             type_string = line1 + ' '*(16 - len(line1)) + '\n' + type_choice[type_set] + ' '*(16 - len(type_choice[type_set]))
-                            messge_return(lcd,type_string)
+                            message_return(lcd,type_string)
                             type_set_prev = type_set
                         if time.time() - press_before > 30:
                             stay = False
