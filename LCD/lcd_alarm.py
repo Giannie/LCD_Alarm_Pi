@@ -7,6 +7,7 @@ from alarm_time import *
 import subprocess
 import os
 import sys
+import string
 
 select = 1
 right = 2
@@ -20,10 +21,12 @@ lcd = Adafruit_CharLCDPlate()
 
 lcd_string_prev = ''
 wait_time = 1
-
+alph = list(string.ascii_uppercase)
+alph.append("Other")
+type_choice = ["Artist","Playlist"]
 ip_settings = ["Wifi","Ethernet"]
 settings = ["Set hour:","Set minute:", "On or Off?"]
-mpc_settings = ["Play","Pause","Stop","Next","Prev","Sleep","Cancel Sleep"]
+mpc_settings = ["Play","Pause","Stop","Next","Prev","Sleep","Cancel Sleep","Load"]
 menus = ["Set Alarm","Set Backlight","Power Management","IP Addresses"]
 col_string = ['Red','Yellow','Green','Teal','Blue','Violet']
 pow_string = ['Shutdown','Reboot','Cancel']
@@ -115,6 +118,71 @@ while True:
                         output = output.split(' ')
                         command = ["kill"] + output
                         subprocess.call(command)
+                    elif n == select and mpc_setting == 7:
+                        stay = True
+                        n = 0
+                        type_set = 0
+                        type_set_prev = ''
+                        line1 = "Media Type:"
+                        while stay:
+                            n = lcd.buttons()
+                            if type_set != type_set_prev:
+                                type_string = line1 + ' '*(16 - len(line1)) + '\n' + type_choice[type_set] + ' '*(16 - len(type_choice[type_set]))
+                                type_set_prev = type_set
+                            if time.time() - press_before > 30:
+                                stay = False
+                                mpc = False
+                                break
+                            elif button_test(n) and time.time() - press_before > wait_time/2.0:
+                                press_before = time.time()
+                                if n == up:
+                                    type_set = (type_set + 1) % len(type_choice)
+                                elif n == down:
+                                    type_set = (type_set - 1) % len(type_choice)
+                                elif n == left or n == right:
+                                    stay = False
+                                    mpc = False
+                                    break
+                                elif n == select:
+                                    if type_set = 1:
+                                        n = 0
+                                        play_set = 0
+                                        play_set_prev = ''
+                                        line1 = "Choose Playlists:"
+                                        playlists = mpc_playists()
+                                        while True:
+                                            n = lcd.buttons()
+                                            if play_set != play_set_prev:
+                                                play_string = line1 + ' '*(16 - len(line1)) + '\n' + playlists[play_set] + ' '*(16 - len(playists[play_set]))
+                                                play_set_prev = play_set
+                                            if time.time() - press_before > 30:
+                                                stay = False
+                                                mpc = False
+                                                break
+                                            elif button_test(n) and time.time() - press_before > wait_time/2.0:
+                                                press_before = time.time()
+                                                if n == up:
+                                                    play_set = (play_set + 1) % len(playlists)
+                                                elif n == down:
+                                                    play_set = (play_set - 1) % len(playlists)
+                                                elif n == right or n == left:
+                                                    stay = False
+                                                    mpc = False
+                                                    break
+                                                elif n == select:
+                                                    mpc_load(playlists[play_set])
+                                                    mpc_play()
+                                                    stay = False
+                                                    mpc = False
+                                                    break
+                                            n = 0
+                                            sleep(0.1)
+                                    elif type_set = 0:
+                                        stay = False
+                                        mpc = False
+                                        break
+                        n = 0
+                        sleep(0.1)
                     n = 0
                 sleep(0.1)
         if lcd_on and time.time() - before > 5:

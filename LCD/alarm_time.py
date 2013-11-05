@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import string
 import datetime
 import subprocess
 from crontab import CronTab
@@ -103,3 +104,51 @@ def set_alarm(hour,minute,on):
     cron.write()
     return
 
+def mpc_artists():
+    art = []
+    for i in range(27):
+        art.append([])
+    p1 = subprocess.Popen(["mpc",'list','artist'],stdout=subprocess.PIPE)
+    artists = p1.stdout.read()
+    artists = artists.split('\n')
+    for artist in artists:
+        if len(artist) > 3:
+            if artist[0:5] == "The ":
+                artist = artist[4:] + " The"
+    artists.sort()
+    for artist in artists:
+        if artist != '' and not(artist[0].lower() in string.lowercase):
+            art[26] += [artist]
+        elif len(artist) > 3 and artist[-4:] != " The" or (len(artist) < 4 and len(artist) > 0):
+            art[string.lowercase.index(artist[0].lower())] += [artist]
+        elif artist[-4:] == " The":
+            artist = artist
+            art[string.lowercase.index(artist[0].lower())] += (["The " + artist[0:-4]])
+    return art
+
+def mpc_albums(artist):
+    p1 = subprocess.Popen(["mpc","ls",artist],stdout=subprocess.PIPE)
+    albums = p1.stdout.read()
+    paths = albums.split('\n')[:-1]
+    albums = []
+    for album in paths:
+        length = len(artist) + 1
+        album  = album[length:]
+        albums.append(album)
+    return [albums,paths]
+
+def mpc_playlists():
+    p1 = subprocess.Popen(["mpc","lsplaylists"],stdout=subprocess.PIPE)
+    playlists = p1.stdout.read()
+    playlists = playlists.split('\n')[:-1]
+    playlists.sort()
+    return playlists
+
+def mpc_load(playlist):
+    subprocess.call(["mpc","load",playlist])
+
+def mpc_add(path):
+    subprocess.call(["mpc","add",path])
+
+def mpc_play():
+    subprocess.call(["mpc","play"])
