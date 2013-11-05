@@ -144,7 +144,7 @@ while True:
                                     mpc = False
                                     break
                                 elif n == select:
-                                    if type_set = 1:
+                                    if type_set == 1:
                                         n = 0
                                         play_set = 0
                                         play_set_prev = ''
@@ -177,7 +177,7 @@ while True:
                                                     break
                                             n = 0
                                             sleep(0.1)
-                                    elif type_set = 0:
+                                    elif type_set == 0:
                                         stay = False
                                         mpc = False
                                         break
