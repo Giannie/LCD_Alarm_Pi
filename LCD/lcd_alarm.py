@@ -351,8 +351,10 @@ while True:
             song = p1.stdout.read()
             if '-' in song:
                 song = song[song.index('-')+2:-1]
-            if len(song) == 0:
+            elif len(song) == 0:
                 song = "Nothing playing"
+            else:
+                song = song[:-1]
             song_string = message_gen("Current song:",song)
             message_return(lcd,song_string)
             while True:
