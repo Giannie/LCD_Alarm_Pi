@@ -349,7 +349,8 @@ while True:
             current = True
             p1 = subprocess.Popen(["mpc","current"],stdout=subprocess.PIPE)
             song = p1.stdout.read()
-            song = song[song.index('-')+2:-1]
+            if '-' in song:
+                song = song[song.index('-')+2:-1]
             if len(song) == 0:
                 song = "Nothing playing"
             song_string = message_gen("Current song:",song)
