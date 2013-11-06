@@ -292,7 +292,7 @@ while True:
                                                                         n = 0
                                                                         break
                                                                     elif n == select:
-                                                                        mpc_add(path[alb_set])
+                                                                        mpc_add(paths[alb_set])
                                                                         mpc_play()
                                                                         mpc = False
                                                                         stay = False
