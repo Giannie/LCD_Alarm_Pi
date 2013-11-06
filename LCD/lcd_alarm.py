@@ -349,11 +349,22 @@ while True:
                 p1 = subprocess.Popen(["mpc","current"],stdout=subprocess.PIPE)
                 song = p1.stdout.read()
                 song = song[song.index('-')+2:-1]
+                if len(song) == 0:
+                    song = "Nothing playing"
                 song_string = message_gen("Current song:",song)
                 message_return(lcd,song_string)
-                while current:
+                while True:
+                    n = lcd.buttons()
                     if time.time() - time_track > 5:
-                        curent = False
+                        n = 0
+                        lcd_string_prev = ''
+                        break
+                    if button_test(n):
+                        n = 0
+                        lcd_string_prev = ''
+                        break
+                    n = 0
+                    sleep(0.1)
             elif n == up:
                 lcd_on = not(lcd_on)
                 press_before = time.time()
