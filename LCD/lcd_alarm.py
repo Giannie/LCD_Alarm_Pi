@@ -349,6 +349,7 @@ while True:
             if play_state:
                 lcd.write(0xCF)
                 lcd.write(0,True)
+                lcd.write(0x80)
             lcd_string_prev = lcd_string
             play_state_prev = play_state
         if colour != colour_prev:
