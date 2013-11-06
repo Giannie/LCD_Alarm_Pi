@@ -17,6 +17,13 @@ def gen_setting(setting,hour,minute):
     set_string = setting + ' '*(16 - len(setting)) + '\n' + add_zero(hour) + ':' + add_zero(minute) + " "*11
     return set_string
 
+def message_gen(string1,string2):
+    if len(string1) < 17:
+        string1 = string1 + ' '*(16 - len(string1))
+    if len(string2) < 17:
+        string2 = string2 + ' '*(16 - len(string2))
+    return string1 + '\n' + string2
+
 def message_return(lcd,string):
     lcd.message(string)
     lcd.write(0x80)
