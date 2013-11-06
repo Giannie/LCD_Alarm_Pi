@@ -57,7 +57,7 @@ while True:
             mpc_setting = 0
             while mpc:
                 n = lcd.buttons()
-                if mpc_setting = 5:
+                if mpc_setting == 5:
                     if time.time() - random_check > 5:
                         current_random = mpc_randomcheck()
                     mpc_string = message_gen(mpc_settings[mpc_setting],"Currently " + current_random)
