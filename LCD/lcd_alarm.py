@@ -360,7 +360,7 @@ while True:
                         n = 0
                         lcd_string_prev = ''
                         break
-                    if button_test(n) and time.time() - press_before: > wait_time/2.0:
+                    if button_test(n) and time.time() - press_before > wait_time/2.0:
                         press_before = time.time()
                         n = 0
                         lcd_string_prev = ''
