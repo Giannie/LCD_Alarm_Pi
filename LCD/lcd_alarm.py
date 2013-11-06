@@ -8,6 +8,7 @@ import subprocess
 import os
 import sys
 import string
+import BBC_playlist
 
 select = 1
 right = 2
@@ -176,6 +177,10 @@ while True:
                                                     lcd_string_prev = ''
                                                     break
                                                 elif n == select:
+                                                    if playlists[play_set][0:3] == BBC:
+                                                        BBC_playlist.generate()
+                                                        subprocess.call("cp /home/pi/radio/* /var/lib/mpd/playlists",shell=True)
+                                                        subprocess.call("chown mpd:audio /var/lib/mpd/playlists/BBC*",shell=True)
                                                     mpc_load(playlists[play_set])
                                                     mpc_play()
                                                     stay = False
