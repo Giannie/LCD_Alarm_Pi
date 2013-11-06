@@ -27,7 +27,7 @@ alph.append("Other")
 type_choice = ["Artist","Playlist"]
 ip_settings = ["Wifi","Ethernet"]
 settings = ["Set hour:","Set minute:", "On or Off?"]
-mpc_settings = ["Play","Pause","Stop","Next","Prev","Sleep","Cancel Sleep","Load"]
+mpc_settings = ["Play","Pause","Stop","Next","Prev","Random","Sleep","Cancel Sleep","Load"]
 menus = ["Set Alarm","Set Backlight","Power Management","IP Addresses"]
 col_string = ['Red','Yellow','Green','Teal','Blue','Violet']
 pow_string = ['Shutdown','Reboot','Cancel']
@@ -82,7 +82,7 @@ while True:
                         lcd_string_prev = ''
                         mpc = False
                         n = 0
-                    elif n == select and mpc_setting == 5:
+                    elif n == select and mpc_setting == 6:
                         n = 0
                         sleep_time = 0
                         sleep_string_prev = ''
@@ -111,7 +111,7 @@ while True:
                                     break
                             sleep(0.1)
                             n = 0
-                    elif n == select and mpc_setting == 6:
+                    elif n == select and mpc_setting == 7:
                         mpc = False
                         lcd_string_prev = ''
                         n=0
@@ -121,7 +121,7 @@ while True:
                         output = output.split(' ')
                         command = ["kill"] + output
                         subprocess.call(command)
-                    elif n == select and mpc_setting == 7:
+                    elif n == select and mpc_setting == 8:
                         stay = True
                         n = 0
                         type_set = 0
