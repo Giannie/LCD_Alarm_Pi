@@ -158,8 +158,8 @@ while True:
                                         while True:
                                             n = lcd.buttons()
                                             if play_set != play_set_prev:
-                                                play_string = line1 + ' '*(16 - len(line1)) + '\n' + playlists[play_set] + ' '*(16 - len(playlists[play_set]))
-                                                message_return(lcd,play_string[:17])
+                                                play_string = line1 + ' '*(16 - len(line1)) + '\n' + playlists[play_set][:17] + ' '*(16 - len(playlists[play_set]))
+                                                message_return(lcd,play_string)
                                                 play_set_prev = play_set
                                             if time.time() - press_before > 30:
                                                 stay = False
