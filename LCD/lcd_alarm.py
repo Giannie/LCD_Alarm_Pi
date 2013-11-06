@@ -340,9 +340,20 @@ while True:
                 lcd.clear()
             lcd_on_prev = lcd_on
         if lcd_on and button_test(n) and time.time() - press_before > wait_time/4.0 and time.time() - press_before < 30:
-            if n == right or n == left:
+            if n == right:
                 mpc = True
                 press_before = time.time()
+            elif n == left:
+                time_track = time.time()
+                current = True
+                p1 = subprocess.Popen(["mpc","current"],stdout=subprocess.PIPE)
+                song = p1.stdout.read()
+                song = song[song.index('-')+2:-1]
+                song_string = message_gen("Current song:",song)
+                message_return(lcd,song_string)
+                while current:
+                    if time.time() - time_track > 5:
+                        curent = False
             elif n == up:
                 lcd_on = not(lcd_on)
                 press_before = time.time()
