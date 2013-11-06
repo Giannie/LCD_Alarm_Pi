@@ -471,12 +471,16 @@ while True:
                                         lcd_string_prev = ''
                                         stay = False
                                         break
-                                    elif button_test(n) and time.time() - press_before > wait_time/2.0 and time.time() - press_before < 30:
+                                    elif button_test(n) and time.time() - press_before > wait_time/2.0:
                                         press_before = time.time()
                                         if n == up:
                                             setting = (setting + 1) % len(col_string)
                                         elif n == down:
                                             setting = (setting - 1) % len(col_string)
+                                        elif n == left or n == right:
+                                            lcd_string_prev = ''
+                                            stay = False
+                                            break
                                         elif n == select:
                                             colour = setting
                                             lcd_string_prev = ''
