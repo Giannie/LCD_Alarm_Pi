@@ -161,3 +161,11 @@ def mpc_add(path):
 
 def mpc_play():
     subprocess.call(["mpc","play"])
+
+def mpc_randomcheck():
+    p1 = subprocess.Popen("mpc",stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(["grep","volume"],stdin=p1.stdout,stdout=subprocess.PIPE)
+    s = p2.stdout.read()
+    s = s.split(' ')
+    s = s[9]
+    return s
