@@ -48,7 +48,8 @@ lcd_string = alarm_time(crontab,alarm)
 press_before = 0
 mpc = False
 while True:
-    try:
+    while True:
+##    try:
         lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
         n = lcd.buttons()
         if lcd_on and mpc:
@@ -640,30 +641,30 @@ while True:
             press_before = time.time()
             n = 0
         sleep(0.1)
-    except:
-        print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken.", datetime.datetime.now().hour, datetime.datetime.now().minute
-        count = True
-        sleep(5)
-        subprocess.call(["sh","/usr/local/bin/detect_screen.sh"])
-        while True:
-            try:
-                lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
-                break
-            except:
-                if count:
-                    count = not(count)
-                    print >> sys.stderr, "I can't access the screen yet."
-                else:
-                    pass
-                sleep(10)
-        lcd = Adafruit_CharLCDPlate()
-        if lcd_on:
-            lcd.backlight(colours[colour])
-        else:
-            lcd.backlight(lcd.OFF)
-            lcd.clear()
-        lcd_string_prev = ''
-        print >> sys.stderr, "I've accessed the screen, hopefully it will work now."
-
-
-
+##    except:
+##        print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken.", datetime.datetime.now().hour, datetime.datetime.now().minute
+##        count = True
+##        sleep(5)
+##        subprocess.call(["sh","/usr/local/bin/detect_screen.sh"])
+##        while True:
+##            try:
+##                lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
+##                break
+##            except:
+##                if count:
+##                    count = not(count)
+##                    print >> sys.stderr, "I can't access the screen yet."
+##                else:
+##                    pass
+##                sleep(10)
+##        lcd = Adafruit_CharLCDPlate()
+##        if lcd_on:
+##            lcd.backlight(colours[colour])
+##        else:
+##            lcd.backlight(lcd.OFF)
+##            lcd.clear()
+##        lcd_string_prev = ''
+##        print >> sys.stderr, "I've accessed the screen, hopefully it will work now."
+##
+##
+##
