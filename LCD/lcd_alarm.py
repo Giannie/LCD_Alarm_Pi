@@ -52,11 +52,17 @@ while True:
         lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
         n = lcd.buttons()
         if lcd_on and mpc:
+            random_check = 0
             mpc_string_prev = ''
             mpc_setting = 0
             while mpc:
                 n = lcd.buttons()
-                mpc_string = mpc_settings[mpc_setting] + ' '*(16 - len(mpc_settings[mpc_setting])) + '\n' + ' '*16
+                if mpc_setting = 5:
+                    if time.time() - random_check > 5:
+                        current_random = mpc_randomcheck()
+                    mpc_string = message_gen(mpc_settings[mpc_setting],"Currently " + current_random)
+                else:
+                    mpc_string = mpc_settings[mpc_setting] + ' '*(16 - len(mpc_settings[mpc_setting])) + '\n' + ' '*16
                 if mpc_string != mpc_string_prev:
                     message_return(lcd,mpc_string)
                     mpc_string_prev = mpc_string
@@ -82,6 +88,16 @@ while True:
                         lcd_string_prev = ''
                         mpc = False
                         n = 0
+                    elif n == select and mpc_setting == 5:
+                        rans=["on","off"]
+                        if current_random == "off":
+                            ran = 0
+                        else:
+                            ran = 1
+                        subprocess.call(["mpc","random",rans[ran]])
+                        mpc = False
+                        lcd_string_prev = ''
+                        n = 0
                     elif n == select and mpc_setting == 6:
                         n = 0
                         sleep_time = 0
@@ -101,8 +117,12 @@ while True:
                                 press_before = time.time()
                                 if n == up:
                                     sleep_time += 5
-                                elif n == down:
+                                elif n == down and sleep_time > 0:
                                     sleep_time -= 5
+                                elif n == left or n == right:
+                                    mpc = False
+                                    lcd_string_prev = ''
+                                    break
                                 elif n == select:
                                     if sleep_time != 0:
                                         subprocess.Popen(["/usr/local/bin/music_sleep.sh",str(60*sleep_time)])
