@@ -6,7 +6,6 @@ import subprocess
 from crontab import CronTab
 from time import sleep
 from Adafruit_CharLCDPlate import Adafruit_CharLCDPlate
-import unicodedata
 
 def button_test(n):
     if n in [1,2,4,8,16]:
@@ -125,8 +124,6 @@ def mpc_artists():
                 artist = artist[4:] + " The"
     artists.sort()
     for artist in artists:
-        artist = artist.decode('UTF-8')
-        artist = unicodedata.normalize('NFKD', artist).encode('ascii','ignore')
         if artist != '' and not(artist[0].lower() in string.lowercase):
             art[26] += [artist]
         elif len(artist) > 3 and artist[-4:] != " The" or (len(artist) < 4 and len(artist) > 0):

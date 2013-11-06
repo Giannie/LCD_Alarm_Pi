@@ -159,7 +159,7 @@ while True:
                                             n = lcd.buttons()
                                             if play_set != play_set_prev:
                                                 play_string = line1 + ' '*(16 - len(line1)) + '\n' + playlists[play_set] + ' '*(16 - len(playlists[play_set]))
-                                                message_return(lcd,play_string)
+                                                message_return(lcd,play_string[:17])
                                                 play_set_prev = play_set
                                             if time.time() - press_before > 30:
                                                 stay = False
@@ -230,7 +230,7 @@ while True:
                                                     while stay3:
                                                         n = lcd.buttons()
                                                         if art_set != art_set_prev:
-                                                            art_string = message_gen(line1,artists[art_set])
+                                                            art_string = message_gen(line1,artists[art_set][:17])
                                                             message_return(lcd,art_string)
                                                             art_set_prev = art_set
                                                         if time.time() - press_before > 30:
@@ -266,7 +266,7 @@ while True:
                                                                 while True:
                                                                     n = lcd.buttons()
                                                                     if alb_set != alb_set_prev:
-                                                                        alb_string = message_gen(line1,albums[alb_set])
+                                                                        alb_string = message_gen(line1,albums[alb_set][:17])
                                                                         message_return(lcd,alb_string)
                                                                         alb_set_prev = alb_set
                                                                     if time.time() - press_before > 30:
@@ -355,7 +355,7 @@ while True:
                     song = "Nothing playing"
                 else:
                     song = song[:-1]
-                song_string = message_gen("Current song:",song)
+                song_string = message_gen("Current song:",song[:17])
                 message_return(lcd,song_string)
                 while True:
                     n = lcd.buttons()
