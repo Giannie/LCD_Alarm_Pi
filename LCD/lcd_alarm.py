@@ -19,6 +19,8 @@ left = 16
 FNULL = open(os.devnull, 'w')
 
 lcd = Adafruit_CharLCDPlate()
+play_char = [0B1000,0B1100,0B1110,0B1111,0B1110,0B1100,0B1000,0B0]
+lcd.createChar(0,play_char)
 
 lcd_string_prev = ''
 wait_time = 1
@@ -44,6 +46,7 @@ lcd_on_prev = True
 before = 0
 crontab = ''
 alarm = ''
+play_stat_prev = ''
 lcd_string = alarm_time(crontab,alarm)
 press_before = 0
 mpc = False
@@ -334,15 +337,20 @@ while True:
                     n = 0
                 sleep(0.1)
         if lcd_on and time.time() - before > 5:
+            play_state = check_playing()
             time_date = cur_time()
             fun = alarm_time(crontab,alarm)
             crontab = fun[0]
             alarm = fun[1]
             lcd_string = time_date + '\n' + alarm
             before = time.time()
-        if lcd_string != lcd_string_prev:
+        if lcd_string != lcd_string_prev or play_state != play_state_prev:
             message_return(lcd,lcd_string)
+            if play_state:
+                lcd.write(0xCF)
+                lcd.write(0,True)
             lcd_string_prev = lcd_string
+            play_state_prev = play_state
         if colour != colour_prev:
             lcd.backlight(colours[colour])
             colour_prev = colour

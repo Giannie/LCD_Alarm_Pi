@@ -169,3 +169,12 @@ def mpc_randomcheck():
     s = s.split(' ')
     s = s[9]
     return s
+
+def check_playing():
+    p1 = subprocess.Popen("mpc",stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(["grep","playing"],stdin=p1.stdout,stdout=subprocess.PIPE)
+    string = p2.stdout.read()
+    if len(string) > 0:
+        return True
+    else:
+        return False
