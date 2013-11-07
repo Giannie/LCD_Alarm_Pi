@@ -357,6 +357,7 @@ while True:
             colour_prev = colour
         if lcd_on != lcd_on_prev:
             if lcd_on:
+                play_state = check_playing()
                 time_date = cur_time()
                 fun = alarm_time(crontab,alarm)
                 crontab = fun[0]
@@ -364,6 +365,10 @@ while True:
                 lcd_string = time_date + '\n' + alarm
                 message_return(lcd,lcd_string)
                 colour = colour_def
+                if play_state:
+                    lcd.write(0xCF)
+                    lcd.write(0,True)
+                    lcd.write(0x80)
                 lcd.backlight(colours[colour])
             else:
                 lcd.backlight(lcd.OFF)
