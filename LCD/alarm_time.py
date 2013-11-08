@@ -139,18 +139,19 @@ def mpc_artists():
     p1 = subprocess.Popen(["mpc",'list','artist'],stdout=subprocess.PIPE)
     artists = p1.stdout.read()
     artists = artists.split('\n')
+    artists_temp = []
     for artist in artists:
         if len(artist) > 3:
             if artist[0:5] == "The ":
                 artist = artist[4:] + " The"
-    artists.sort()
-    for artist in artists:
+        artists_temp.append(artist)
+    artists_temp.sort()
+    for artist in artists_temp:
         if artist != '' and not(artist[0].lower() in string.lowercase):
             art[26] += [artist]
         elif len(artist) > 3 and artist[-4:] != " The" or (len(artist) < 4 and len(artist) > 0):
             art[string.lowercase.index(artist[0].lower())] += [artist]
         elif artist[-4:] == " The":
-            artist = artist
             art[string.lowercase.index(artist[0].lower())] += (["The " + artist[0:-4]])
     return art
 
