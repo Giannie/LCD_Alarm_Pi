@@ -126,7 +126,14 @@ while True:
         n = 0
         sleep(0.1)
     except:
-        print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken.", datetime.datetime.now().hour, datetime.datetime.now().minute
+        now = datetime.datetime.now()
+        hour = str(now.hour)
+        minute = str(now.minute)
+        day = str(now.day)
+        month = str(now.month)
+        date_log = hour + ":" + minute + ' ' + day + "/" + month
+        print date_log
+        print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken."
         count = True
         sleep(5)
         subprocess.call(["sh","/usr/local/bin/detect_screen.sh"])
