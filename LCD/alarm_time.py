@@ -7,6 +7,7 @@ import subprocess
 from crontab import CronTab
 from time import sleep
 from Adafruit_CharLCDPlate import Adafruit_CharLCDPlate
+import BBC_playlist
 
 wait_time = 1
 select = 1
