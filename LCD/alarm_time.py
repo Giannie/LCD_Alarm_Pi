@@ -598,6 +598,7 @@ def backlight_menu(lcd):
         set_string = message_gen(col_string[setting],'')
         if set_string != set_string_prev:
             message_return(lcd,set_string)
+            arrows(lcd)
             lcd.backlight(colours[setting])
             set_string_prev = set_string
         if time.time() - press_before > 30:
@@ -626,6 +627,7 @@ def power_menu(lcd):
         if setting != setting_prev:
             set_string = message_gen(pow_string[setting],'')
             message_return(lcd,set_string)
+            arrows(lcd)
             setting_prev = setting
         if time.time() - press_before > 30:
             break
@@ -703,6 +705,7 @@ def ip_menu(lcd):
                 ip_addr = ip_addr[11][5:]
             ip_str = message_gen(ip_settings[ip_set],ip_addr)
             message_return(lcd,ip_str)
+            arrows(lcd)
         if time.time() - press_before > 30:
             break
         elif button_test(n) and time.time() - press_before > wait_time/2.0:
