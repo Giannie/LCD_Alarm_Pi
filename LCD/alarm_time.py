@@ -277,6 +277,7 @@ def sleep_menu(lcd):
         sleep_string = message_gen(line1,str(sleep_time) + " minutes")
         if sleep_string != sleep_string_prev:
             message_return(lcd,sleep_string)
+            arrows(lcd)
             sleep_string_prev = sleep_string
         if time.time() - press_before > 30:
             break
@@ -306,6 +307,7 @@ def type_menu(lcd):
         if type_set != type_set_prev:
             type_string = line1 + ' '*(16 - len(line1)) + '\n' + type_choice[type_set] + ' '*(16 - len(type_choice[type_set]))
             message_return(lcd,type_string)
+            arrows(lcd)
             type_set_prev = type_set
         if time.time() - press_before > 30:
             break
@@ -339,6 +341,7 @@ def playlist_menu(lcd):
         if play_set != play_set_prev:
             play_string = message_gen(line1,playlists[play_set][:17])
             message_return(lcd,play_string)
+            arrows(lcd)
             play_set_prev = play_set
         if time.time() - press_before > 30:
             break
@@ -374,6 +377,7 @@ def letter_menu(lcd):
             let_string = message_gen(line1,alph[let_set])
             let_set_prev = let_set
             message_return(lcd,let_string)
+            arrows(lcd)
         if time.time() - press_before > 30:
             break
         elif button_test(n) and time.time() - press_before > wait_time/2.0:
@@ -401,6 +405,7 @@ def artist_menu(lcd,let_set):
         if art_set != art_set_prev:
             art_string = message_gen(line1,artists[art_set][:17])
             message_return(lcd,art_string)
+            arrows(lcd)
             art_set_prev = art_set
         if time.time() - press_before > 30:
             break
@@ -431,6 +436,7 @@ def album_menu(lcd,artists,art_set):
         if alb_set != alb_set_prev:
             alb_string = message_gen(line1,albums[alb_set][:17])
             message_return(lcd,alb_string)
+            arrows(lcd)
             alb_set_prev = alb_set
         if time.time() - press_before > 30:
             break
