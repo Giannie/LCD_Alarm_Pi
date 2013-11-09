@@ -225,6 +225,7 @@ def mpc_screen(lcd):
             mpc_string = message_gen(mpc_settings[mpc_setting],'')
         if mpc_string != mpc_string_prev:
             message_return(lcd,mpc_string)
+            arrows(lcd)
             mpc_string_prev = mpc_string
         if time.time() - press_before > 30:
             break
@@ -482,9 +483,7 @@ def main_menu(lcd,colour):
         if menu != menu_prev:
             menu_string = menus[menu] + ' '*(16-len(menus[menu])) + "\n" + ' '*16
             message_return(lcd,menu_string)
-            lcd.write(0xC8)
-            lcd.write(3,True)
-            lcd.write(0x80)
+            arrows(lcd)
             menu_prev = menu
         if button_test(n) and time.time() - press_before > wait_time/4.0:
             press_before = time.time()
@@ -717,3 +716,7 @@ def ip_menu(lcd):
         n = 0
         sleep(0.1)
 
+def arrows(lcd):
+    lcd.write(0xCF)
+    lcd.write(3,True)
+    lcd.write(0x80)
