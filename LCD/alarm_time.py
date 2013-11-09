@@ -483,8 +483,8 @@ def main_menu(lcd,colour):
             menu_string = menus[menu] + ' '*(16-len(menus[menu])) + "\n" + ' '*16
             message_return(lcd,menu_string)
             lcd.write(0xC8)
-            lcd.message(3,True)
-            lcd.message(4,True)
+            lcd.write(3,True)
+            lcd.write(4,True)
             lcd.write(0x80)
             menu_prev = menu
         if button_test(n) and time.time() - press_before > wait_time/4.0:
