@@ -22,16 +22,14 @@ lcd = Adafruit_CharLCDPlate()
 play_char = [0b10000,0b11000,0b11100,0b11000,0b10000,0b0,0b0,0b0]
 rand_char = [0b0,0b0,0b0,0b0,0b111,0b101,0b110,0b101]
 pr_char = []
-arrow_left = [0b1,0b11,0b111,0b0,0b0,0b111,0b11,0b1]
-arrow_right = [0b10000,0b11000,0b11100,0b0,0b0,0b11100,0b11000,0b10000]
+arrow = [0b100,0b1110,0b11111,0b0,0b0,0b11111,0b1110,0b100]
 for i in range(8):
     pr_char.append(play_char[i] | rand_char[i])
 
 lcd.createChar(0,play_char)
 lcd.createChar(1,rand_char)
 lcd.createChar(2,pr_char)
-lcd.createChar(3,arrow_left)
-lcd.createChar(4,arrow_right)
+lcd.createChar(3,arrow)
 
 lcd_string_prev = ''
 wait_time = 1
