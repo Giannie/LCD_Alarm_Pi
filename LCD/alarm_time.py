@@ -449,8 +449,13 @@ def album_menu(lcd,artists,art_set):
             elif n == left or n == right:
                 break
             elif n == select:
-                mpc_add(paths[alb_set])
-                mpc_play()
+                try:
+                    mpc_add(paths[alb_set])
+                    mpc_play()
+                except:
+                    string = message_gen("Can't play that,","sorry")
+                    message_return(lcd,string)
+                    sleep(2)
                 break
         n = 0
         sleep(0.1)
