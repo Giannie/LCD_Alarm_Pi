@@ -57,7 +57,7 @@ crontab = ''
 alarm = ''
 play_state_prev = ''
 time_date = alarm_time.cur_time()
-fun = alarm_time(crontab,alarm)
+fun = alarm_time.alarm_time(crontab,alarm)
 crontab = fun[0]
 alarm = fun[1]
 lcd_string = time_date + '\n' + alarm
@@ -71,7 +71,7 @@ while True:
         if lcd_on and time.time() - before > 5:
             play_state = alarm_time.check_playing()
             time_date = alarm_time.cur_time()
-            fun = alarm_time(crontab,alarm)
+            fun = alarm_time.alarm_time(crontab,alarm)
             crontab = fun[0]
             alarm = fun[1]
             lcd_string = alarm_time.message_gen(time_date,alarm)
