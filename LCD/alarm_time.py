@@ -6,7 +6,6 @@ import datetime
 import subprocess
 from crontab import CronTab
 from time import sleep
-from Adafruit_CharLCDPlate import Adafruit_CharLCDPlate
 import BBC_playlist
 
 wait_time = 1
@@ -80,7 +79,7 @@ def cur_time():
 def update_crontab():
     proc = subprocess.Popen(['crontab','-lu','pi'],stdout=subprocess.PIPE)
     output = proc.stdout.read()
-    return crontab
+    return output
 
 def alarm_time(crontab,line2):
     proc = subprocess.Popen(['crontab','-lu','pi'],stdout=subprocess.PIPE)
@@ -88,14 +87,8 @@ def alarm_time(crontab,line2):
     if output == crontab:
             return [output,line2]
     else:
-            now = datetime.datetime.now()
             cron = CronTab('pi')
             job = cron.find_comment('Alarm')[0]
-    
-            current_hour = add_zero(str(now.hour))
-            current_min = add_zero(str(now.minute))
-            current_day = add_zero(str(now.day))
-            current_mon = add_zero(str(now.month))
     
             alarm_hour = add_zero(str(job.hour))
             alarm_min = add_zero(str(job.minute))
@@ -103,19 +96,12 @@ def alarm_time(crontab,line2):
     
             alarm_time = alarm_hour + ':' + alarm_min
     
-            current_time = current_hour + ":" + current_min
-            current_date = current_day + "/" + current_mon
-    
-            line1 = current_time + ' '*(16-len(current_time+current_date)) + current_date
-    
-            if job.is_enabled():
+            if alarm_on:
                     line2 = "Alarm: " + alarm_time
             else:
                     line2 = "Alarm off"
     
-            line2 = line2 + ' '*(16-len(line2))
-    
-            lcd_string = line1 + '\n' + line2
+            line2 = line2
     
             return [output,line2]
 	

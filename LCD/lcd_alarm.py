@@ -1,14 +1,14 @@
 #!/usr/bin/python
 
 from time import sleep
+import datetime
 import time
 from Adafruit_CharLCDPlate import Adafruit_CharLCDPlate
-from alarm_time import *
+import alarm_time
 import subprocess
 import os
 import sys
 import string
-import BBC_playlist
 
 select = 1
 right = 2
@@ -56,7 +56,7 @@ before = 0
 crontab = ''
 alarm = ''
 play_state_prev = ''
-time_date = cur_time()
+time_date = alarm_time.cur_time()
 fun = alarm_time(crontab,alarm)
 crontab = fun[0]
 alarm = fun[1]
@@ -69,15 +69,15 @@ while True:
         lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
         n = lcd.buttons()
         if lcd_on and time.time() - before > 5:
-            play_state = check_playing()
-            time_date = cur_time()
+            play_state = alarm_time.check_playing()
+            time_date = alarm_time.cur_time()
             fun = alarm_time(crontab,alarm)
             crontab = fun[0]
             alarm = fun[1]
-            lcd_string = time_date + '\n' + alarm
+            lcd_string = alarm_time.message_gen(time_date,alarm)
             before = time.time()
         if lcd_string != lcd_string_prev or play_state != play_state_prev:
-            main_screen(lcd,lcd_string,play_state)
+            alarm_time.main_screen(lcd,lcd_string,play_state)
             lcd_string_prev = lcd_string
             play_state_prev = play_state
         if colour != colour_prev:
@@ -93,30 +93,30 @@ while True:
                 lcd.backlight(lcd.OFF)
                 lcd.clear()
             lcd_on_prev = lcd_on
-        if lcd_on and button_test(n) and time.time() - press_before > wait_time/4.0 and time.time() - press_before < 30:
+        if lcd_on and alarm_time.button_test(n) and time.time() - press_before > wait_time/4.0 and time.time() - press_before < 30:
             press_before = time.time()
             if n == right:
-                mpc_screen(lcd)
+                alarm_time.mpc_screen(lcd)
                 lcd_string_prev = ''
                 before = 0
                 press_before = time.time() + 0.5
             elif n == left:
-                cur_track_screen(lcd)
+                alarm_time.cur_track_screen(lcd)
                 lcd_string_prev = ''
                 before = 0
                 press_before = time.time() + 0.5
             elif n == up:
                 lcd_on = not(lcd_on)
             elif n == down:
-                new_setting = get_time()
-                set_alarm(new_setting[0],new_setting[1],new_setting[2])
+                new_setting = alarm_time.get_time()
+                alarm_time.set_alarm(new_setting[0],new_setting[1],new_setting[2])
                 fun = alarm_time(crontab,alarm)
                 crontab = fun[0]
                 alarm = fun[1]
                 lcd_string = time_date + '\n' + alarm
                 press_before = time.time()
             elif n == select:
-                main_menu(lcd,colour)
+                alarm_time.main_menu(lcd,colour)
                 lcd_string_prev = ''
                 before = 0
                 press_before = time.time() + 0.5
@@ -134,7 +134,7 @@ while True:
         day = str(now.day)
         month = str(now.month)
         date_log = hour + ":" + minute + ' ' + day + "/" + month
-        print date_log
+        print >> sys.stderr, date_log
         print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken."
         count = True
         sleep(5)
@@ -151,7 +151,6 @@ while True:
                     pass
                 sleep(10)
         try:
-            lcd = Adafruit_CharLCDPlate()
             if lcd_on:
                 lcd.backlight(colours[colour])
             else:
