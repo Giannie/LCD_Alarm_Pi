@@ -7,6 +7,8 @@ import subprocess
 from crontab import CronTab
 from time import sleep
 import BBC_playlist
+import pywapi
+import texttospeech
 
 wait_time = 1
 select = 1
@@ -472,7 +474,7 @@ def cur_track_screen(lcd):
 
 def main_menu(lcd,colour):
     sleep(wait_time/2.0)
-    menus = ["Set Alarm","Set Backlight","Power Management","IP Addresses"]
+    menus = ["Set Alarm","Weather Report","Set Backlight","Power Management","IP Addresses"]
     menu = 0
     menu_prev = ''
     press_before = time.time()
@@ -496,12 +498,15 @@ def main_menu(lcd,colour):
                     alarm_set_screen(lcd)
                     break
                 elif menu == 1:
-                    colour = backlight_menu(lcd)
+                    weather_menu(lcd)
                     break
                 elif menu == 2:
-                    power_menu(lcd)
+                    colour = backlight_menu(lcd)
                     break
                 elif menu == 3:
+                    power_menu(lcd)
+                    break
+                elif menu == 4:
                     ip_menu(lcd)
                     break
         n = 0
@@ -721,3 +726,88 @@ def arrows(lcd):
     lcd.write(0xCF)
     lcd.write(3,True)
     lcd.write(0x80)
+
+def get_weather(number):
+    weather = pywapi.get_weather_from_weather_com('UKXX0085',units = 'metric')
+    forecasts = weather['forecasts']
+    forecast = forecasts[number]
+    return forecast
+
+def forecast_menu(lcd,number):
+    press_before = time.time()
+    forecast = get_weather(number)
+    high = forecast['high']
+    low = forecast['low']
+    day = forecast['day']
+    day_text = day['text']
+    day_chance_precip = day['chance_precip']
+    night = forecast['night']
+    night_text = night['text']
+    night_chance_precip = night['chance_precip']
+    high_low_screen = message_gen("High: " + high,"Low: " + low)
+    day_text_screen = message_gen(day_text,"Rain: " + day_chance_precip)
+    night_text_screen = message_gen(night_text,"Rain: " + night_chance_precip)
+    settings = [message_gen("Full Report",''),high_low_screen,day_text_screen,night_text_screen]
+    setting = 0
+    setting_prev = ''
+    if number == 0:
+        dow = "Today"
+    else:
+        dow = forecast['day_of_week']
+    full_report = dow + " will be " + day_text + " with a " + day_chance_precip + " percent chance of rain. Temperatures will reach a high of " + high + " and a low of " + low
+    while True:
+        n = lcd.buttons()
+        if setting != setting_prev:
+            message_return(settings[setting])
+            setting_prev = setting
+        if time.time() - press_before > 30:
+            break
+        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+            press_before = time.time()
+            if n == up:
+                setting = (setting + 1) % len(settings)
+            elif n == down:
+                setting = (setting - 1) % len(settings)
+            elif n == left or n == right:
+                break
+            elif n == select:
+                if setting == 0:
+                    texttospeech.speakSpeechFromText(full_report)
+                else:
+                    break
+        n = 0
+        sleep(0.1)
+        
+    
+    
+def weather_menu(lcd):
+    press_before = time.time()
+    settings = ["Today","Tomorrow"]
+    setting = 0
+    setting_prev = ''
+    while True:
+        n = lcd.buttons()
+        if setting != setting_prev:
+            string = message_gen(settings[setting],'')
+            message_return(string)
+            setting_prev = setting
+        if time.time() - press_before > 30:
+            break
+        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+            press_before = time.time()
+            if n == up:
+                setting = (setting + 1) % len(settings)
+            elif n == down:
+                setting = (setting - 1) % len(settings)
+            elif n == left or n == right:
+                break
+            elif n == select:
+                forecast_menu(lcd,setting)
+                break
+        n = 0
+        sleep(0.1)
+    
+    
+    
+    
+    
