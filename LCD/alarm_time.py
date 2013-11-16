@@ -738,20 +738,30 @@ def forecast_menu(lcd,number):
     forecast = get_weather(number)
     high = forecast['high']
     low = forecast['low']
-    day = forecast['day']
-    day_text = day['text']
-    day_chance_precip = day['chance_precip']
+    try:
+        day = forecast['day']
+        day_text = day['text']
+        day_chance_precip = day['chance_precip']
+        day_text_screen = message_gen(day_text,"Rain: " + day_chance_precip)
+    except:
+        day = ''
     night = forecast['night']
     night_text = night['text']
     night_chance_precip = night['chance_precip']
     high_low_screen = message_gen("High: " + high,"Low: " + low)
-    day_text_screen = message_gen(day_text,"Rain: " + day_chance_precip)
     night_text_screen = message_gen(night_text,"Rain: " + night_chance_precip)
-    settings = [message_gen("Full Report",''),high_low_screen,day_text_screen,night_text_screen]
+    if len(day) > 0:
+        settings = [message_gen("Full Report",''),high_low_screen,day_text_screen,night_text_screen]
+    else:
+        settings = [message_gen("Full Report",''),high_low_screen,night_text_screen]
     setting = 0
     setting_prev = ''
-    if number == 0:
+    if number == 0 and len(day) > 0:
         dow = "Today"
+    elif number == 0:
+        dow = "Tonight"
+        day_text = night_text
+        day_chance_precip = night_chance_precip
     else:
         dow = forecast['day_of_week']
     full_report1 = dow + " will be " + day_text + " with a " + day_chance_precip + " percent chance of rain."

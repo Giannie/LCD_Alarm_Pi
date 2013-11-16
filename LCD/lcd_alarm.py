@@ -64,8 +64,8 @@ lcd_string = time_date + '\n' + alarm
 press_before = 0
 mpc = False
 while True:
-    while True:
-#    try:
+#    while True:
+    try:
         lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
         n = lcd.buttons()
         if lcd_on and time.time() - before > 5:
@@ -127,39 +127,39 @@ while True:
             press_before = time.time()
         n = 0
         sleep(0.1)
-#    except:
-#        now = datetime.datetime.now()
-#        hour = str(now.hour)
-#        minute = str(now.minute)
-#        day = str(now.day)
-#        month = str(now.month)
-#        date_log = hour + ":" + minute + ' ' + day + "/" + month
-#        print >> sys.stderr, date_log
-#        print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken."
-#        count = True
-#        sleep(5)
-#        subprocess.call(["sh","/usr/local/bin/detect_screen.sh"])
-#        while True:
-#            try:
-#                lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
-#                break
-#            except:
-#                if count:
-#                    count = not(count)
-#                    print >> sys.stderr, "I can't access the screen yet."
-#                else:
-#                    pass
-#                sleep(10)
-#        try:
-#            if lcd_on:
-#                lcd.backlight(colours[colour])
-#            else:
-#                lcd.backlight(lcd.OFF)
-#                lcd.clear()
-#        except:
-#            pass
-#        lcd_string_prev = ''
-#        print >> sys.stderr, "I've accessed the screen, hopefully it will work now."
-#
-#
-#
+    except:
+        now = datetime.datetime.now()
+        hour = str(now.hour)
+        minute = str(now.minute)
+        day = str(now.day)
+        month = str(now.month)
+        date_log = hour + ":" + minute + ' ' + day + "/" + month
+        print >> sys.stderr, date_log
+        print >> sys.stderr, "There is something wrong with the screen, hopefully it hasn't broken."
+        count = True
+        sleep(5)
+        subprocess.call(["sh","/usr/local/bin/detect_screen.sh"])
+        while True:
+            try:
+                lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
+                break
+            except:
+                if count:
+                    count = not(count)
+                    print >> sys.stderr, "I can't access the screen yet."
+                else:
+                    pass
+                sleep(10)
+        try:
+            if lcd_on:
+                lcd.backlight(colours[colour])
+            else:
+                lcd.backlight(lcd.OFF)
+                lcd.clear()
+        except:
+            pass
+        lcd_string_prev = ''
+        print >> sys.stderr, "I've accessed the screen, hopefully it will work now."
+
+
+
