@@ -758,7 +758,7 @@ def forecast_menu(lcd,number):
     while True:
         n = lcd.buttons()
         if setting != setting_prev:
-            message_return(settings[setting])
+            message_return(,lcd,settings[setting])
             setting_prev = setting
         if time.time() - press_before > 30:
             break
@@ -789,7 +789,7 @@ def weather_menu(lcd):
         n = lcd.buttons()
         if setting != setting_prev:
             string = message_gen(settings[setting],'')
-            message_return(string)
+            message_return(lcd,string)
             setting_prev = setting
         if time.time() - press_before > 30:
             break
