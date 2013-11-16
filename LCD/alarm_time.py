@@ -773,6 +773,7 @@ def forecast_menu(lcd,number):
             elif n == select:
                 if setting == 0:
                     texttospeech.speakSpeechFromText(full_report)
+                    break
                 else:
                     break
         n = 0
