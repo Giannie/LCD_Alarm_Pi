@@ -764,6 +764,8 @@ def forecast_menu(lcd,number):
         day_chance_precip = night_chance_precip
     else:
         dow = forecast['day_of_week']
+    if day_text[:2] == "AM":
+        day_text = "Morning" + day_text[2:]
     full_report1 = dow + " will be " + day_text + " with a " + day_chance_precip + " percent chance of rain."
     full_report2 = "Temperatures will reach a high of " + high + " and a low of " + low
     while True:
