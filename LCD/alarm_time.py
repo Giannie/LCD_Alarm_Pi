@@ -754,7 +754,8 @@ def forecast_menu(lcd,number):
         dow = "Today"
     else:
         dow = forecast['day_of_week']
-    full_report = dow + " will be " + day_text + " with a " + day_chance_precip + " percent chance of rain. Temperatures will reach a high of " + high + " and a low of " + low
+    full_report1 = dow + " will be " + day_text + " with a " + day_chance_precip + " percent chance of rain."
+    full_report2 = "Temperatures will reach a high of " + high + " and a low of " + low
     while True:
         n = lcd.buttons()
         if setting != setting_prev:
@@ -772,7 +773,10 @@ def forecast_menu(lcd,number):
                 break
             elif n == select:
                 if setting == 0:
-                    texttospeech.speakSpeechFromText(full_report)
+                    subprocess.call(["mpc","pause"])
+                    texttospeech.speakSpeechFromText(full_report1)
+                    texttospeech.speakSpeechFromText(full_report1)
+                    subprocess.call(["mpc","play"])
                     break
                 else:
                     break

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import urllib, pycurl, os, subprocess
+import urllib, pycurl, os
 
 def downloadFile(url, fileName):
     fp = open(fileName, "wb")
@@ -21,7 +21,5 @@ def getGoogleSpeechURL(phrase):
 def speakSpeechFromText(phrase):
     googleSpeechURL = getGoogleSpeechURL(phrase)
     downloadFile(googleSpeechURL,"tts.mp3")
-    subprocess.call(["mpc","pause"])
     os.system("mplayer tts.mp3")
-    subprocess.call(["mpc","play"])
    
