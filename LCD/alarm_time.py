@@ -94,7 +94,7 @@ def alarm_time(crontab,line2):
     
             alarm_hour = add_zero(str(job.hour))
             alarm_min = add_zero(str(job.minute))
-            alarm_on = job.is_enabled
+            alarm_on = job.is_enabled()
     
             alarm_time = alarm_hour + ':' + alarm_min
     
