@@ -113,7 +113,7 @@ while True:
                 fun = alarm_time.alarm_time(crontab,alarm)
                 crontab = fun[0]
                 alarm = fun[1]
-                lcd_string = time_date + '\n' + alarm
+                lcd_string = alarm_time.message_gen(time_date,alarm)
                 press_before = time.time()
             elif n == select:
                 alarm_time.main_menu(lcd,colour)
