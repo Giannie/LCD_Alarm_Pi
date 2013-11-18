@@ -773,6 +773,7 @@ def forecast_menu(lcd,number):
         n = lcd.buttons()
         if setting != setting_prev:
             message_return(lcd,settings[setting])
+            arrows(lcd)
             setting_prev = setting
         if time.time() - press_before > 30:
             break
