@@ -93,7 +93,7 @@ while True:
                 lcd.backlight(lcd.OFF)
                 lcd.clear()
             lcd_on_prev = lcd_on
-        if lcd_on and alarm_time.button_test(n) and time.time() - press_before > wait_time/4.0 and time.time() - press_before < 30:
+        if lcd_on and alarm_time.button_test(n,press_before):
             press_before = time.time()
             if n == right:
                 alarm_time.mpc_screen(lcd)

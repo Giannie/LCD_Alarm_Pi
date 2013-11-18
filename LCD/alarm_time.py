@@ -26,8 +26,9 @@ def main_screen(lcd,lcd_string,play_state):
         lcd.write(sum(play_state) - 1,True)
         lcd.write(0x80)
 
-def button_test(n):
-    if n in [1,2,4,8,16]:
+def button_test(n,press_before):
+    wait = time.time() - press_before
+    if n in [1,2,4,8,16] and wait > wait_time/4.0 and wait < 30:
         return True
     else:
         return False
@@ -218,7 +219,7 @@ def mpc_screen(lcd):
             mpc_string_prev = mpc_string
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 mpc_setting = (mpc_setting + 1) % len(mpc_settings)
@@ -270,7 +271,7 @@ def sleep_menu(lcd):
             sleep_string_prev = sleep_string
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 sleep_time += 5
@@ -300,7 +301,7 @@ def type_menu(lcd):
             type_set_prev = type_set
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 type_set = (type_set + 1) % len(type_choice)
@@ -334,7 +335,7 @@ def playlist_menu(lcd):
             play_set_prev = play_set
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 play_set = (play_set + 1) % len(playlists)
@@ -369,7 +370,7 @@ def letter_menu(lcd):
             arrows(lcd)
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 let_set = (let_set + 1) % len(alph)
@@ -398,7 +399,7 @@ def artist_menu(lcd,let_set):
             art_set_prev = art_set
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 art_set = (art_set + 1) % len(artists)
@@ -434,7 +435,7 @@ def album_menu(lcd,artists,art_set):
             alb_set_prev = alb_set
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 alb_set = (alb_set + 1) % len(albums)
@@ -466,7 +467,7 @@ def cur_track_screen(lcd):
         n = lcd.buttons()
         if time.time() - time_track > 5:
             break
-        if button_test(n) and time.time() - press_before > wait_time/2.0:
+        if button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             break
         n = 0
@@ -485,7 +486,7 @@ def main_menu(lcd,colour):
             message_return(lcd,menu_string)
             arrows(lcd)
             menu_prev = menu
-        if button_test(n) and time.time() - press_before > wait_time/4.0:
+        if button_test(n,press_before) and time.time() - press_before > wait_time/4.0:
             press_before = time.time()
             if n == up:
                 menu = (menu + 1) % len(menus)
@@ -546,7 +547,7 @@ def alarm_set_screen(lcd):
                     message_return(lcd,add_zero(minute))
             flash = not(flash)
             set_bef = time.time()
-        if button_test(n) and time.time() - press_before > wait_time/2.0:
+        if button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == select:
                 set_alarm(hour,minute,on)
@@ -606,7 +607,7 @@ def backlight_menu(lcd):
             set_string_prev = set_string
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 setting = (setting + 1) % len(col_string)
@@ -634,7 +635,7 @@ def power_menu(lcd):
             setting_prev = setting
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 setting = (setting + 1) % len(pow_string)
@@ -670,7 +671,7 @@ def confirm_menu(lcd):
             setting_prev = setting_confirm
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 setting_confirm = (setting_confirm + 1) % len(confirm)
@@ -711,7 +712,7 @@ def ip_menu(lcd):
             arrows(lcd)
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 ip_set = (ip_set + 1) % len(ip_settings)
@@ -775,7 +776,7 @@ def forecast_menu(lcd,number):
             setting_prev = setting
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 setting = (setting + 1) % len(settings)
@@ -807,10 +808,11 @@ def weather_menu(lcd):
         if setting != setting_prev:
             string = message_gen(settings[setting],'')
             message_return(lcd,string)
+            arrows(lcd)
             setting_prev = setting
         if time.time() - press_before > 30:
             break
-        elif button_test(n) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
             press_before = time.time()
             if n == up:
                 setting = (setting + 1) % len(settings)
