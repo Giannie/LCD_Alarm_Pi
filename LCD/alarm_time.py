@@ -777,8 +777,8 @@ def forecast_menu(lcd,number):
             if setting == 2 and len(day) > 0:
                 symbol = 0
             elif setting == 2 or setting == 3:
-                symbol == 1
-            
+                symbol = 1
+            sun_moon(lcd,symbol)
             setting_prev = setting
         if time.time() - press_before > 30:
             break
