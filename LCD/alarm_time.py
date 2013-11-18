@@ -774,6 +774,11 @@ def forecast_menu(lcd,number):
         if setting != setting_prev:
             message_return(lcd,settings[setting])
             arrows(lcd)
+            if setting == 2 and len(day) > 0:
+                symbol = 0
+            elif setting == 2 or setting == 3:
+                symbol == 1
+            
             setting_prev = setting
         if time.time() - press_before > 30:
             break
@@ -826,8 +831,10 @@ def weather_menu(lcd):
                 break
         n = 0
         sleep(0.1)
-    
-    
-    
-    
-    
+        
+def sun_moon(lcd,symbol):
+    if symbol in [0,1]:
+        symbol = symbol + 4
+        lcd.write(0x8F)
+        lcd.write(symbol,True)
+        lcd.write(0x80)
