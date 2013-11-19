@@ -841,24 +841,24 @@ def sun_moon(lcd,symbol):
 class forecast:
     def __init__(self,number):
         self.forecast = get_weather(number)
-        high = self.forecast['high']
-        low = self.forecast['low']
-        night = self.forecast['night']
-        night_text = night['text']
-        night_chance_precip = night['chance_precip']
+        self.high = self.forecast['high']
+        self.low = self.forecast['low']
+        self.night = self.forecast['night']
+        self.night_text = self.night['text']
+        self.night_chance_precip = self.night['chance_precip']
         try:
-            day = self.forecast['day']
-            day_text = day['text']
-            day_chance_precip = day['chance_precip']
+            self.day = self.forecast['day']
+            self.day_text = self.day['text']
+            self.day_chance_precip = self.day['chance_precip']
         except:
-            day = ''
+            self.day = ''
         if number == 0 and len(day) > 0:
-            dow = "Today"
+            self.dow = "Today"
         elif number == 0:
-            dow = "Tonight"
-            day_text = night_text
-            day_chance_precip = night_chance_precip
+            self.dow = "Tonight"
+            self.day_text = self.night_text
+            self.day_chance_precip = self.night_chance_precip
         else:
-            dow = self.forecast['day_of_week']
-        full_report1 = dow + " will be " + day_text + " with a " + day_chance_precip + " percent chance of rain."
-        full_report2 = "Temperatures will reach a high of " + high + " and a low of " + low
+            self.dow = self.forecast['day_of_week']
+        self.full_report1 = self.dow + " will be " + self.day_text + " with a " + self.day_chance_precip + " percent chance of rain."
+        self.full_report2 = "Temperatures will reach a high of " + self.high + " and a low of " + self.low
