@@ -36,14 +36,7 @@ if [ -z "$string" ]
         sleep 15
         mpc volume 90
 fi
-sleep 1800
-string="$(mpc | grep playing)"
-if [ "$string" ]; then
-	mpc idle
-	mpc pause
-	
-fi
-sleep 1800
+sleep 3600
 string="$(mpc | grep playing)"
 if [ "$string" ]; then
 	mpc idle
