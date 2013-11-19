@@ -10,6 +10,16 @@ import os
 import sys
 import string
 
+now_start = datetime.datetime.now()
+day_start = str(now_start.day)
+month_start = str(now_start.month)
+hour_start = alarm_time.add_zero(str(now_start.hour))
+minute_start = alarm_time.add_zero(str(now_start.minute))
+
+start_log_string = hour_start + ':' + minute_start + ' on ' + day_start + '/' + month_start
+
+print >> sys.stderr, "Clock started at " + start_log_string
+
 select = 1
 right = 2
 down = 4
@@ -19,6 +29,7 @@ left = 16
 FNULL = open(os.devnull, 'w')
 
 lcd = Adafruit_CharLCDPlate()
+
 play_char = [0b10000,0b11000,0b11100,0b11000,0b10000,0b0,0b0,0b0]
 rand_char = [0b0,0b0,0b0,0b0,0b111,0b101,0b110,0b101]
 pr_char = []

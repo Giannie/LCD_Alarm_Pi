@@ -837,3 +837,9 @@ def sun_moon(lcd,symbol):
         lcd.write(0x8F)
         lcd.write(symbol,True)
         lcd.write(0x80)
+
+class forecast:
+    def __init__(self,number):
+        self.forecast = get_weather(number)
+    
+    
