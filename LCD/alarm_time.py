@@ -852,7 +852,7 @@ class forecast:
             self.day_chance_precip = self.day['chance_precip']
         except:
             self.day = ''
-        if number == 0 and len(day) > 0:
+        if number == 0 and len(self.day) > 0:
             self.dow = "Today"
         elif number == 0:
             self.dow = "Tonight"
