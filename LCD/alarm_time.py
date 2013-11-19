@@ -841,13 +841,13 @@ def sun_moon(lcd,symbol):
 class forecast:
     def __init__(self,number):
         self.forecast = get_weather(number)
-    high = forecast['high']
-    low = forecast['low']
-    night = forecast['night']
+    high = self.forecast['high']
+    low = self.forecast['low']
+    night = self.forecast['night']
     night_text = night['text']
     night_chance_precip = night['chance_precip']
     try:
-        day = forecast['day']
+        day = self.forecast['day']
         day_text = day['text']
         day_chance_precip = day['chance_precip']
     except:
@@ -859,6 +859,6 @@ class forecast:
         day_text = night_text
         day_chance_precip = night_chance_precip
     else:
-        dow = forecast['day_of_week']
+        dow = self.forecast['day_of_week']
     full_report1 = dow + " will be " + day_text + " with a " + day_chance_precip + " percent chance of rain."
     full_report2 = "Temperatures will reach a high of " + high + " and a low of " + low
