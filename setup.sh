@@ -5,7 +5,7 @@ if [ "$(pwd)" != "/home/pi" ]; then
         exit 0
 fi
 if [ -z "$(crontab -l | grep Alarm)" ]; then
-	line="# 0 7 * * * sh /usr/local/bin/alarmcron.sh > ~/cron.txt # Alarm"
+	line="# 0 7 * * * sh /usr/local/bin/alarmcron.sh > ~/logs/cron/cron.txt # Alarm"
 	(crontab -l; echo "$line" ) | crontab -
 fi
 if [ -z "$(crontab -l | grep "LCD Logging")" ]; then
@@ -28,11 +28,12 @@ fi
 if [ -z "$(grep i2c-dev /etc/modules)" ]; then
 	sudo sh -c "echo i2c-dev >> /etc/modules"
 fi
-sudo apt-get install mpd mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools wicd-curses libcurl4-gnutls-dev librtmp-dev
+sudo apt-get install mpd mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools wicd-curses libcurl4-gnutls-dev librtmp-dev mplayer htop elinks
 sudo pip install python-crontab
 sudo pip install wiringpi
 sudo pip install pywapi
 sudo pip install pycurl
+sudo pip install requests
 git clone https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code
 git clone https://github.com/dmcg/raspberry-strogonanoff
 mkdir logs

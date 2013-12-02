@@ -736,39 +736,17 @@ def get_weather(number):
 
 def forecast_menu(lcd,number):
     press_before = time.time()
-    forecast = get_weather(number)
-    high = forecast['high']
-    low = forecast['low']
-    try:
-        day = forecast['day']
-        day_text = day['text']
-        day_chance_precip = day['chance_precip']
-        day_text_screen = message_gen(day_text,"Rain: " + day_chance_precip)
-    except:
-        day = ''
-    night = forecast['night']
-    night_text = night['text']
-    night_chance_precip = night['chance_precip']
-    high_low_screen = message_gen("High: " + high,"Low: " + low)
-    night_text_screen = message_gen(night_text,"Rain: " + night_chance_precip)
-    if len(day) > 0:
+    fore = forecast(number)
+    high_low_screen = message_gen("High: " + fore.high,"Low: " + fore.low)
+    night_text_screen = message_gen(fore.night_text,"Rain: " + fore.night_chance_precip)
+    if len(fore.day) > 0:
         settings = [message_gen("Full Report",''),high_low_screen,day_text_screen,night_text_screen]
     else:
         settings = [message_gen("Full Report",''),high_low_screen,night_text_screen]
     setting = 0
     setting_prev = ''
-    if number == 0 and len(day) > 0:
-        dow = "Today"
-    elif number == 0:
-        dow = "Tonight"
-        day_text = night_text
-        day_chance_precip = night_chance_precip
-    else:
-        dow = forecast['day_of_week']
-    if day_text[:2] == "AM":
-        day_text = "Morning" + day_text[2:]
-    full_report1 = dow + " will be " + day_text + " with a " + day_chance_precip + " percent chance of rain."
-    full_report2 = "Temperatures will reach a high of " + high + " and a low of " + low
+    full_report1 = fore.fullreport1
+    full_report2 = fore.fullreport2
     while True:
         n = lcd.buttons()
         if setting != setting_prev:

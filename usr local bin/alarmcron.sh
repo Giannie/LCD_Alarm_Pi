@@ -36,7 +36,15 @@ if [ -z "$string" ]
         sleep 15
         mpc volume 90
 fi
-sleep 3600
+sleep 1800
+string="$(mpc | grep playing)"
+if [ "$string" ]; then
+	mpc idle
+	mpc pause
+	sudo python /home/pi/LCD\ Code/weather_report.py
+	mpc play
+fi
+sleep 1800
 string="$(mpc | grep playing)"
 if [ "$string" ]; then
 	mpc idle
