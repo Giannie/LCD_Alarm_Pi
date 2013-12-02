@@ -11,4 +11,4 @@ then
 fi
 mpc stop
 mpc clear
-plug_off.sh
+/usr/local/bin/plug_off.sh
