@@ -36,12 +36,14 @@ if [ -z "$string" ]
         sleep 15
         mpc volume 90
 fi
-sleep 1800
+sleep 240
+mpc volume 85
+sleep 1560
 string="$(mpc | grep playing)"
 if [ "$string" ]; then
 	mpc idle
 	mpc pause
-	sudo python /home/pi/LCD\ Code/weather_report.py
+#	sudo python /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate/weather_report.py
 	mpc play
 fi
 sleep 1800

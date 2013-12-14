@@ -2,5 +2,5 @@
 
 if [ -z "$(ifconfig wlan0 | grep "inet addr")" ]
 then
-	ifup —-force wlan0
+	ifdown wlan0 && ifup —-force wlan0
 fi
