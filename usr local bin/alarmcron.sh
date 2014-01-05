@@ -54,5 +54,6 @@ fi
 mpc random off
 mpc stop
 mpc clear
+mpc volume 90
 /usr/local/bin/plug_off.sh
 /usr/local/bin/plug_off.sh
