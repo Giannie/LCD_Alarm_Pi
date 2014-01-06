@@ -21,5 +21,7 @@ def getGoogleSpeechURL(phrase):
 def speakSpeechFromText(phrase):
     googleSpeechURL = getGoogleSpeechURL(phrase)
     downloadFile(googleSpeechURL,"/tmp/tts.mp3")
-    os.system("mplayer /tmp/tts.mp3 -nocache 2>&1")
    
+def play_file(phrase):
+    speakSpeechFromText(phrase)
+    os.system("mplayer /tmp/tts.mp3 -nocache 2>&1")

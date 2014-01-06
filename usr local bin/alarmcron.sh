@@ -43,7 +43,7 @@ string="$(mpc | grep playing)"
 if [ "$string" ]; then
 	mpc idle
 	mpc pause
-#	sudo python /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate/weather_report.py
+	python /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafruit_CharLCDPlate/weather.py
 	mpc play
 fi
 sleep 1800

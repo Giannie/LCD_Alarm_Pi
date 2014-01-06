@@ -770,8 +770,8 @@ def forecast_menu(lcd,number):
             elif n == select:
                 if setting == 0:
                     subprocess.call(["mpc","pause"])
-                    texttospeech.speakSpeechFromText(full_report1)
-                    texttospeech.speakSpeechFromText(full_report2)
+                    texttospeech.play_file(full_report1)
+                    texttospeech.play_file(full_report2)
                     subprocess.call(["mpc","play"])
                     break
                 else:
