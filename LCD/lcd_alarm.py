@@ -79,7 +79,7 @@ lcd_string = time_date + '\n' + alarm
 press_before = 0
 mpc = False
 while True:
-#    while True:
+#     while True:
     try:
         lcd.i2c.bus.read_byte_data(lcd.i2c.address,lcd.MCP23017_GPIOA)
         n = lcd.buttons()

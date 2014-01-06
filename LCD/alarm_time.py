@@ -738,6 +738,7 @@ def forecast_menu(lcd,number):
     press_before = time.time()
     fore = forecast(number)
     high_low_screen = message_gen("High: " + fore.high,"Low: " + fore.low)
+    day_text_screen = message_gen(fore.day_text,'Rain: ' + fore.day_chance_precip)
     night_text_screen = message_gen(fore.night_text,"Rain: " + fore.night_chance_precip)
     if len(fore.day) > 0:
         settings = [message_gen("Full Report",''),high_low_screen,day_text_screen,night_text_screen]
@@ -745,14 +746,14 @@ def forecast_menu(lcd,number):
         settings = [message_gen("Full Report",''),high_low_screen,night_text_screen]
     setting = 0
     setting_prev = ''
-    full_report1 = fore.fullreport1
-    full_report2 = fore.fullreport2
+    full_report1 = fore.full_report1
+    full_report2 = fore.full_report2
     while True:
         n = lcd.buttons()
         if setting != setting_prev:
             message_return(lcd,settings[setting])
             arrows(lcd)
-            if setting == 2 and len(day) > 0:
+            if setting == 2 and len(fore.day) > 0:
                 sun_moon(lcd,0)
             elif setting == 2 or setting == 3:
                 sun_moon(lcd,1)
