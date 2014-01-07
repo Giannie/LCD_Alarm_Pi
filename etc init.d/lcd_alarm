@@ -23,7 +23,7 @@ start() {
 
 stop() {
 	a="$(pgrep -f lcd_alarm)" 
-	if [ $a ]; then
+	if [ "$a" ]; then
 		pgrep -f lcd_alarm | while read line
 			do sudo kill $line
 		done
@@ -40,7 +40,7 @@ case "$1" in
         ;;
   status)
 	a="$(pgrep -f lcd_alarm)"
-        if [ $a ]; then
+        if [ "$a" ]; then
 		echo "Process running as"
 		echo $a
 	fi
