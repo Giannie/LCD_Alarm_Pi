@@ -47,7 +47,7 @@ cp /home/pi/LCD_Alarm_Pi/LCD/* /home/pi/Adafruit-Raspberry-Pi-Python-Code/Adafru
 sudo cp /home/pi/LCD_Alarm_Pi/etc\ init.d/* /etc/init.d/
 sudo cp /home/pi/LCD_Alarm_Pi/usr\ local\ bin/* /usr/local/bin/
 sudo cp /home/pi/LCD_Alarm_Pi/etc/* /etc
-sudo update-rc.d lcd_alarm defaults 100
+sudo update-rc.d lcd_start defaults 100
 
 sudo chown mpd /etc/mpd.conf
 sudo chgrp audio /etc/mpd.conf
