@@ -1,24 +1,24 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          lcd_start.sh
+# Provides:          lcd_alarm
 # Required-Start:
 # Required-Stop:
 # Should-Start:
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: lcd_start
+# Short-Description: lcd_alarm
 # Description:       Starts the LCD for the alarm
 #
 ### END INIT INFO
 
 start() {
-	if [ -z "$(pgrep -f lcd_alarm)" ]; then
-		cat /home/pi/logs/lcd/lcd_error.log >> /home/pi/logs/lcd/lcd_error.log1
-		cat /home/pi/logs/lcd/out_lcd.log >> /home/pi/logs/lcd/out_lcd.log1
-		/usr/local/bin/lcd_start
-	fi
+    if [ -z "$(pgrep -f lcd_alarm)" ]; then
+        cat /home/pi/logs/lcd/lcd_error.log >> /home/pi/logs/lcd/lcd_error.log1
+        cat /home/pi/logs/lcd/out_lcd.log >> /home/pi/logs/lcd/out_lcd.log1
+        /usr/local/bin/lcd_start
+    fi
 	}
 
 stop() {
