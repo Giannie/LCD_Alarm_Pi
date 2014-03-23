@@ -13,7 +13,11 @@
 #
 ### END INIT INFO
 
-PATH=/usr/local/bin:$PATH
+path_check=$(echo $PATH | grep /usr/local/bin)
+
+if [ -z $path_check ]; then
+    PATH=/usr/local/bin:$PATH
+fi
 
 start() {
 	if [ -z "$(pgrep -f lcd_alarm)" ]; then
