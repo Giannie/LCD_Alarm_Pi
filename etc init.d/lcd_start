@@ -13,6 +13,8 @@
 #
 ### END INIT INFO
 
+PATH=/usr/local/bin:$PATH
+
 start() {
 	if [ -z "$(pgrep -f lcd_alarm)" ]; then
 		cat /home/pi/logs/lcd/lcd_error.log >> /home/pi/logs/lcd/lcd_error.log1
