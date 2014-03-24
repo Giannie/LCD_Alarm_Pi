@@ -5,7 +5,7 @@ import texttospeech
 from mpd import MPDClient
 import alarm_time
 
-forecast = alarm_time.forecast(0)
+forecast = alarm_time.Forecast(0)
 
 client = MPDClient()
 client.timeout = 10

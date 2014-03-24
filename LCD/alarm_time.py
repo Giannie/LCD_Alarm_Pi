@@ -19,114 +19,126 @@ left = 16
 
 colour_def = 5
 
-def main_screen(lcd,lcd_string,play_state):
-    message_return(lcd,lcd_string)
+
+def main_screen(lcd, lcd_string, play_state):
+    message_return(lcd, lcd_string)
     if sum(play_state) > 0:
         lcd.write(0xCF)
-        lcd.write(sum(play_state) - 1,True)
+        lcd.write(sum(play_state) - 1, True)
         lcd.write(0x80)
 
-def button_test(n,press_before):
+
+def button_test(n, press_before):
     wait = time.time() - press_before
-    if n in [1,2,4,8,16] and wait > wait_time/4.0 and wait < 30:
+    if n in [1, 2, 4, 8, 16] and wait_time / 4.0 < wait < 30:
         return True
     else:
         return False
 
-def gen_setting(setting,hour,minute):
-    set_string = setting + ' '*(16 - len(setting)) + '\n' + add_zero(hour) + ':' + add_zero(minute) + " "*11
+
+def gen_setting(setting, hour, minute):
+    set_string = setting + ' ' * (16 - len(setting)) + '\n' + add_zero(hour) + ':' + add_zero(minute) + " " * 11
     return set_string
 
-def message_gen(string1,string2):
+
+def message_gen(string1, string2):
     if len(string1) < 17:
-        string1 = string1 + ' '*(16 - len(string1))
+        string1 += ' ' * (16 - len(string1))
     if len(string2) < 17:
-        string2 = string2 + ' '*(16 - len(string2))
+        string2 += ' ' * (16 - len(string2))
     return string1 + '\n' + string2
 
-def message_return(lcd,string):
-    lcd.message(string)
+
+def message_return(lcd, message_string):
+    lcd.message(message_string)
     lcd.write(0x80)
+
 
 def get_time():
     cron = CronTab('pi')
     job = cron.find_comment('Alarm')[0]
     alarm_hour = int(str(job.hour))
     alarm_min = int(str(job.minute))
-    return [alarm_hour,alarm_min,not(job.is_enabled())]
+    return [alarm_hour, alarm_min, not (job.is_enabled())]
 
-def add_zero(time):
-    if int(time) < 10:
-            return "0" + str(time)
+
+def add_zero(time_int):
+    if int(time_int) < 10:
+        return "0" + str(time_int)
     else:
-            return str(time)
+        return str(time_int)
+
 
 def cur_time():
-    weekdays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+    weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
     now = datetime.datetime.now()
-    
+
     current_hour = add_zero(str(now.hour))
     current_min = add_zero(str(now.minute))
     current_day = add_zero(str(now.day))
     current_mon = add_zero(str(now.month))
 
     dow = weekdays[now.weekday()]
-    
+
     current_time = current_hour + ":" + current_min
     current_date = dow + ' ' + current_day + "/" + current_mon
-    
-    line1 = current_time + ' '*(16-len(current_time+current_date)) + current_date
-    
+
+    line1 = current_time + ' ' * (16 - len(current_time + current_date)) + current_date
+
     return line1
 
+
 def update_crontab():
-    proc = subprocess.Popen(['crontab','-lu','pi'],stdout=subprocess.PIPE)
+    proc = subprocess.Popen(['crontab', '-lu', 'pi'], stdout=subprocess.PIPE)
     output = proc.stdout.read()
     return output
 
-def alarm_time(crontab,line2):
-    proc = subprocess.Popen(['crontab','-lu','pi'],stdout=subprocess.PIPE)
+
+def alarm_time(crontab, line2):
+    proc = subprocess.Popen(['crontab', '-lu', 'pi'], stdout=subprocess.PIPE)
     output = proc.stdout.read()
     if output == crontab:
-            return [output,line2]
+        return [output, line2]
     else:
-            cron = CronTab('pi')
-            job = cron.find_comment('Alarm')[0]
-    
-            alarm_hour = add_zero(str(job.hour))
-            alarm_min = add_zero(str(job.minute))
-            alarm_on = job.is_enabled()
-    
-            alarm_time = alarm_hour + ':' + alarm_min
-    
-            if alarm_on:
-                    line2 = "Alarm: " + alarm_time
-            else:
-                    line2 = "Alarm off"
-    
-            line2 = line2
-    
-            return [output,line2]
-	
-def set_alarm(hour,minute,on):
+        cron = CronTab('pi')
+        job = cron.find_comment('Alarm')[0]
+
+        alarm_hour = add_zero(str(job.hour))
+        alarm_min = add_zero(str(job.minute))
+        alarm_on = job.is_enabled()
+
+        alarm_string = alarm_hour + ':' + alarm_min
+
+        if alarm_on:
+            line2 = "Alarm: " + alarm_string
+        else:
+            line2 = "Alarm off"
+
+        line2 = line2
+
+        return [output, line2]
+
+
+def set_alarm(hour, minute, on):
     cron = CronTab('pi')
     job = cron.find_comment('Alarm')[0]
-    
+
     job.clear()
     job.hour.on(hour)
     job.minute.on(minute)
     if on:
-            job.enable()
+        job.enable()
     else:
-            job.enable(False)
+        job.enable(False)
     cron.write()
     return
+
 
 def mpc_artists():
     art = []
     for i in range(27):
         art.append([])
-    p1 = subprocess.Popen(["mpc",'list','artist'],stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(["mpc", 'list', 'artist'], stdout=subprocess.PIPE)
     artists = p1.stdout.read()
     artists = artists.split('\n')
     artists_temp = []
@@ -137,59 +149,66 @@ def mpc_artists():
         artists_temp.append(artist)
     artists_temp.sort()
     for artist in artists_temp:
-        if artist != '' and not(artist[0].lower() in string.lowercase):
+        if artist != '' and not (artist[0].lower() in string.lowercase):
             art[26] += [artist]
-        elif len(artist) > 3 and artist[-4:] != " The" or (len(artist) < 4 and len(artist) > 0):
+        elif len(artist) > 3 and artist[-4:] != " The" or 0 < len(artist) < 4:
             art[string.lowercase.index(artist[0].lower())] += [artist]
         elif artist[-4:] == " The":
             art[string.lowercase.index(artist[0].lower())] += (["The " + artist[0:-4]])
     return art
 
+
 def mpc_albums(artist):
-    p1 = subprocess.Popen(["mpc","ls",artist],stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(["mpc", "ls", artist], stdout=subprocess.PIPE)
     albums = p1.stdout.read()
     paths = albums.split('\n')[:-1]
     albums = []
     for album in paths:
         length = len(artist) + 1
-        album  = album[length:]
+        album = album[length:]
         albums.append(album)
-    return [albums,paths]
+    return [albums, paths]
+
 
 def mpc_playlists():
-    p1 = subprocess.Popen(["mpc","lsplaylists"],stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(["mpc", "lsplaylists"], stdout=subprocess.PIPE)
     playlists = p1.stdout.read()
     playlists = playlists.split('\n')[:-1]
     playlists.sort()
     return playlists
 
+
 def mpc_load(playlist):
-    subprocess.call(["mpc","clear"])
-    subprocess.call(["mpc","load",playlist])
+    subprocess.call(["mpc", "clear"])
+    subprocess.call(["mpc", "load", playlist])
+
 
 def mpc_add(path):
-    subprocess.call(["mpc","clear"])
-    subprocess.call(["mpc","add",path])
+    subprocess.call(["mpc", "clear"])
+    subprocess.call(["mpc", "add", path])
+
 
 def mpc_play():
-    subprocess.call(["mpc","play"])
+    subprocess.call(["mpc", "play"])
 
-def mpc_randomcheck():
-    p1 = subprocess.Popen("mpc",stdout=subprocess.PIPE)
-    p2 = subprocess.Popen(["grep","volume"],stdin=p1.stdout,stdout=subprocess.PIPE)
+
+def mpc_random_check():
+    p1 = subprocess.Popen("mpc", stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(["grep", "volume"], stdin=p1.stdout, stdout=subprocess.PIPE)
     s = p2.stdout.read()
     s = s.split(' ')
     s = s[9]
     return s
 
+
 def check_playing():
     playing = 0
     random = 0
-    p1 = subprocess.Popen("mpc",stdout=subprocess.PIPE)
-    p2 = subprocess.Popen(["grep","playing"],stdin=p1.stdout,stdout=subprocess.PIPE)
+    p1 = subprocess.Popen("mpc", stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(["grep", "playing"], stdin=p1.stdout, stdout=subprocess.PIPE)
     play_string = p2.stdout.read()
-    p1 = subprocess.Popen("mpc",stdout=subprocess.PIPE)
-    p2 = subprocess.Popen(["grep","volume"],stdin=p1.stdout,stdout=subprocess.PIPE)
+    p1 = subprocess.Popen("mpc", stdout=subprocess.PIPE)
+    p2 = subprocess.Popen(["grep", "volume"], stdin=p1.stdout, stdout=subprocess.PIPE)
     s = p2.stdout.read()
     s = s.split(' ')
     random_string = s[9]
@@ -197,29 +216,31 @@ def check_playing():
         playing = 1
     if random_string == "on":
         random = 2
-    return [playing,random]
+    return [playing, random]
+
 
 def mpc_screen(lcd):
     press_before = time.time()
-    mpc_settings = ["Play","Pause","Stop","Next","Prev","Random","Sleep","Cancel Sleep","Load"]
+    mpc_settings = ["Play", "Pause", "Stop", "Next", "Prev", "Random", "Sleep", "Cancel Sleep", "Load"]
     random_check = 0
     mpc_string_prev = ''
     mpc_setting = 0
+    current_random = 'off'
     while True:
         n = lcd.buttons()
         if mpc_setting == 5:
             if time.time() - random_check > 5:
-                current_random = mpc_randomcheck()
-            mpc_string = message_gen(mpc_settings[mpc_setting],"Currently " + current_random)
+                current_random = mpc_random_check()
+            mpc_string = message_gen(mpc_settings[mpc_setting], "Currently " + current_random)
         else:
-            mpc_string = message_gen(mpc_settings[mpc_setting],'')
+            mpc_string = message_gen(mpc_settings[mpc_setting], '')
         if mpc_string != mpc_string_prev:
-            message_return(lcd,mpc_string)
+            message_return(lcd, mpc_string)
             arrows(lcd)
             mpc_string_prev = mpc_string
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 mpc_setting = (mpc_setting + 1) % len(mpc_settings)
@@ -228,25 +249,25 @@ def mpc_screen(lcd):
             elif n == left or n == right:
                 break
             elif n == select and mpc_setting < 5:
-                subprocess.call(["mpc",mpc_settings[mpc_setting].lower()])
+                subprocess.call(["mpc", mpc_settings[mpc_setting].lower()])
                 if mpc_settings[mpc_setting].lower() == "stop":
-                    subprocess.call(["mpc","clear"])
+                    subprocess.call(["mpc", "clear"])
                 break
             elif n == select and mpc_setting == 5:
-                rans=["on","off"]
+                ran_strings = ["on", "off"]
                 if current_random == "off":
                     ran = 0
                 else:
                     ran = 1
-                subprocess.call(["mpc","random",rans[ran]])
+                subprocess.call(["mpc", "random", ran_strings[ran]])
                 break
             elif n == select and mpc_setting == 6:
                 sleep_menu(lcd)
                 break
             elif n == select and mpc_setting == 7:
-                proc = subprocess.Popen(["pgrep","-f","sleep"], stdout=subprocess.PIPE)
+                proc = subprocess.Popen(["pgrep", "-f", "sleep"], stdout=subprocess.PIPE)
                 output = proc.stdout.read()
-                output = output.replace('\n',' ')[:-1]
+                output = output.replace('\n', ' ')[:-1]
                 output = output.split(' ')
                 command = ["kill"] + output
                 subprocess.call(command)
@@ -257,6 +278,7 @@ def mpc_screen(lcd):
         n = 0
         sleep(0.1)
 
+
 def sleep_menu(lcd):
     press_before = time.time()
     sleep_time = 0
@@ -264,14 +286,14 @@ def sleep_menu(lcd):
     line1 = "Sleep after"
     while True:
         n = lcd.buttons()
-        sleep_string = message_gen(line1,str(sleep_time) + " minutes")
+        sleep_string = message_gen(line1, str(sleep_time) + " minutes")
         if sleep_string != sleep_string_prev:
-            message_return(lcd,sleep_string)
+            message_return(lcd, sleep_string)
             arrows(lcd)
             sleep_string_prev = sleep_string
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 sleep_time += 5
@@ -281,27 +303,29 @@ def sleep_menu(lcd):
                 break
             elif n == select:
                 if sleep_time != 0:
-                    subprocess.Popen(["/usr/local/bin/music_sleep.sh",str(60*sleep_time)])
+                    subprocess.Popen(["/usr/local/bin/music_sleep.sh", str(60 * sleep_time)])
                 break
         sleep(0.1)
         n = 0
 
+
 def type_menu(lcd):
     press_before = time.time()
-    type_choice = ["Artist","Playlist"]
+    type_choice = ["Artist", "Playlist"]
     type_set = 0
     type_set_prev = ''
     line1 = "Media Type:"
     while True:
         n = lcd.buttons()
         if type_set != type_set_prev:
-            type_string = line1 + ' '*(16 - len(line1)) + '\n' + type_choice[type_set] + ' '*(16 - len(type_choice[type_set]))
-            message_return(lcd,type_string)
+            type_string = line1 + ' ' * (16 - len(line1)) + '\n' + type_choice[type_set] + ' ' * (
+                16 - len(type_choice[type_set]))
+            message_return(lcd, type_string)
             arrows(lcd)
             type_set_prev = type_set
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 type_set = (type_set + 1) % len(type_choice)
@@ -329,13 +353,13 @@ def playlist_menu(lcd):
     while True:
         n = lcd.buttons()
         if play_set != play_set_prev:
-            play_string = message_gen(line1,playlists[play_set][:17])
-            message_return(lcd,play_string)
+            play_string = message_gen(line1, playlists[play_set][:17])
+            message_return(lcd, play_string)
             arrows(lcd)
             play_set_prev = play_set
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 play_set = (play_set + 1) % len(playlists)
@@ -346,13 +370,14 @@ def playlist_menu(lcd):
             elif n == select:
                 if playlists[play_set][0:3] == "BBC":
                     BBC_playlist.generate()
-                    subprocess.call("cp /home/pi/radio/* /var/lib/mpd/playlists",shell=True)
-                    subprocess.call("chown mpd:audio /var/lib/mpd/playlists/BBC*",shell=True)
+                    subprocess.call("cp /home/pi/radio/* /var/lib/mpd/playlists", shell=True)
+                    subprocess.call("chown mpd:audio /var/lib/mpd/playlists/BBC*", shell=True)
                 mpc_load(playlists[play_set])
                 mpc_play()
                 break
         n = 0
         sleep(0.1)
+
 
 def letter_menu(lcd):
     press_before = time.time()
@@ -364,13 +389,13 @@ def letter_menu(lcd):
     while True:
         n = lcd.buttons()
         if let_set != let_set_prev:
-            let_string = message_gen(line1,alph[let_set])
+            let_string = message_gen(line1, alph[let_set])
             let_set_prev = let_set
-            message_return(lcd,let_string)
+            message_return(lcd, let_string)
             arrows(lcd)
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 let_set = (let_set + 1) % len(alph)
@@ -379,12 +404,13 @@ def letter_menu(lcd):
             elif n == left or n == right:
                 break
             elif n == select:
-                artist_menu(lcd,let_set)
+                artist_menu(lcd, let_set)
                 break
     n = 0
     sleep(0.1)
-                    
-def artist_menu(lcd,let_set):
+
+
+def artist_menu(lcd, let_set):
     press_before = time.time()
     art_set = 0
     art_set_prev = ''
@@ -393,13 +419,13 @@ def artist_menu(lcd,let_set):
     while True:
         n = lcd.buttons()
         if art_set != art_set_prev:
-            art_string = message_gen(line1,artists[art_set][:17])
-            message_return(lcd,art_string)
+            art_string = message_gen(line1, artists[art_set][:17])
+            message_return(lcd, art_string)
             arrows(lcd)
             art_set_prev = art_set
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 art_set = (art_set + 1) % len(artists)
@@ -409,16 +435,17 @@ def artist_menu(lcd,let_set):
                 break
             elif n == select:
                 try:
-                    album_menu(lcd,artists,art_set)
+                    album_menu(lcd, artists, art_set)
                 except:
-                    string = message_gen("Can't play that,","sorry")
-                    message_return(lcd,string)
+                    message_string = message_gen("Can't play that, ", "sorry")
+                    message_return(lcd, message_string)
                     sleep(2)
                 break
     n = 0
     sleep(0.1)
 
-def album_menu(lcd,artists,art_set):
+
+def album_menu(lcd, artists, art_set):
     press_before = time.time()
     alb_set = 0
     alb_set_prev = ''
@@ -429,13 +456,13 @@ def album_menu(lcd,artists,art_set):
     while True:
         n = lcd.buttons()
         if alb_set != alb_set_prev:
-            alb_string = message_gen(line1,albums[alb_set][:17])
-            message_return(lcd,alb_string)
+            alb_string = message_gen(line1, albums[alb_set][:17])
+            message_return(lcd, alb_string)
             arrows(lcd)
             alb_set_prev = alb_set
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 alb_set = (alb_set + 1) % len(albums)
@@ -450,43 +477,45 @@ def album_menu(lcd,artists,art_set):
         n = 0
         sleep(0.1)
 
+
 def cur_track_screen(lcd):
     press_before = time.time()
     time_track = time.time()
-    p1 = subprocess.Popen(["mpc","current"],stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(["mpc", "current"], stdout=subprocess.PIPE)
     song = p1.stdout.read()
     if '-' in song:
-        song = song[song.index('-')+2:-1]
+        song = song[song.index('-') + 2:-1]
     elif len(song) == 0:
         song = "Nothing playing"
     else:
         song = song[:-1]
-    song_string = message_gen("Current song:",song[:17])
-    message_return(lcd,song_string)
+    song_string = message_gen("Current song:", song[:17])
+    message_return(lcd, song_string)
     while True:
         n = lcd.buttons()
         if time.time() - time_track > 5:
             break
-        if button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        if button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             break
         n = 0
         sleep(0.1)
 
-def main_menu(lcd,colour):
-    sleep(wait_time/2.0)
-    menus = ["Set Alarm","Weather Report","Set Backlight","Power Management","IP Addresses"]
+
+def main_menu(lcd, colour):
+    sleep(wait_time / 2.0)
+    menus = ["Set Alarm", "Weather Report", "Set Backlight", "Power Management", "IP Addresses"]
     menu = 0
     menu_prev = ''
     press_before = time.time()
     while True:
         n = lcd.buttons()
         if menu != menu_prev:
-            menu_string = menus[menu] + ' '*(16-len(menus[menu])) + "\n" + ' '*16
-            message_return(lcd,menu_string)
+            menu_string = menus[menu] + ' ' * (16 - len(menus[menu])) + "\n" + ' ' * 16
+            message_return(lcd, menu_string)
             arrows(lcd)
             menu_prev = menu
-        if button_test(n,press_before) and time.time() - press_before > wait_time/4.0:
+        if button_test(n, press_before) and time.time() - press_before > wait_time / 4.0:
             press_before = time.time()
             if n == up:
                 menu = (menu + 1) % len(menus)
@@ -514,8 +543,9 @@ def main_menu(lcd,colour):
         sleep(0.1)
     return colour
 
+
 def alarm_set_screen(lcd):
-    settings = ["Set hour:","Set minute:"]
+    settings = ["Set hour:", "Set minute:"]
     setting = 0
     hour = 7
     minute = 0
@@ -528,86 +558,87 @@ def alarm_set_screen(lcd):
         n = lcd.buttons()
         if time.time() - press_before > 30:
             break
-        set_string = gen_setting(settings[setting],hour,minute)
+        set_string = gen_setting(settings[setting], hour, minute)
         if set_string != set_string_prev:
-            message_return(lcd,set_string)
+            message_return(lcd, set_string)
             set_string_prev = set_string
         if time.time() - set_bef > 0.5:
             if setting == 0:
                 lcd.write(0xC0)
                 if flash:
-                    message_return(lcd,'  ')
+                    message_return(lcd, '  ')
                 else:
-                    message_return(lcd,add_zero(hour))
+                    message_return(lcd, add_zero(hour))
             elif setting == 1:
                 lcd.write(0xC3)
                 if flash:
-                    message_return(lcd,'  ')
+                    message_return(lcd, '  ')
                 else:
-                    message_return(lcd,add_zero(minute))
-            flash = not(flash)
+                    message_return(lcd, add_zero(minute))
+            flash = not flash
             set_bef = time.time()
-        if button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        if button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == select:
-                set_alarm(hour,minute,on)
+                set_alarm(hour, minute, on)
                 break
             elif n == right:
-                message_return(lcd,set_string)
+                message_return(lcd, set_string)
                 setting = (setting + 1) % len(settings)
             elif n == left:
-                message_return(lcd,set_string)
+                message_return(lcd, set_string)
                 setting = (setting - 1) % len(settings)
             elif setting == 0:
                 if n == up:
                     hour = (hour + 1) % 24
-                    set_string = gen_setting(settings[setting],hour,minute)
-                    message_return(lcd,set_string)
-                    flash = not(flash)
+                    set_string = gen_setting(settings[setting], hour, minute)
+                    message_return(lcd, set_string)
+                    flash = not flash
                     set_string_prev = set_string
                     press_before = time.time()
                 elif n == down:
                     hour = (hour - 1) % 24
-                    set_string = gen_setting(settings[setting],hour,minute)
-                    message_return(lcd,set_string)
-                    flash = not(flash)
+                    set_string = gen_setting(settings[setting], hour, minute)
+                    message_return(lcd, set_string)
+                    flash = not flash
                     set_string_prev = set_string
                     press_before = time.time()
             elif setting == 1:
                 if n == up:
                     minute = (minute + 5) % 60
-                    set_string = gen_setting(settings[setting],hour,minute)
-                    message_return(lcd,set_string)
-                    flash = not(flash)
+                    set_string = gen_setting(settings[setting], hour, minute)
+                    message_return(lcd, set_string)
+                    flash = not flash
                     set_string_prev = set_string
                     press_before = time.time()
                 elif n == down:
                     minute = (minute - 5) % 60
-                    set_string = gen_setting(settings[setting],hour,minute)
-                    message_return(lcd,set_string)
-                    flash = not(flash)
+                    set_string = gen_setting(settings[setting], hour, minute)
+                    message_return(lcd, set_string)
+                    flash = not flash
                     set_string_prev = set_string
                     press_before = time.time()
         sleep(0.1)
         n = 0
 
+
 def backlight_menu(lcd):
-    col_string = ['Red','Yellow','Green','Teal','Blue','Violet']
-    colours = [lcd.RED , lcd.YELLOW, lcd.GREEN, lcd.TEAL, lcd.BLUE, lcd.VIOLET]
+    col_string = ['Red', 'Yellow', 'Green', 'Teal', 'Blue', 'Violet']
+    colours = [lcd.RED, lcd.YELLOW, lcd.GREEN, lcd.TEAL, lcd.BLUE, lcd.VIOLET]
     setting = colour_def
     set_string_prev = ''
     press_before = time.time()
     while True:
         n = lcd.buttons()
-        set_string = message_gen(col_string[setting],'')
+        set_string = message_gen(col_string[setting], '')
         if set_string != set_string_prev:
-            message_return(lcd,set_string)
+            message_return(lcd, set_string)
             arrows(lcd)
             lcd.backlight(colours[setting])
             set_string_prev = set_string
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 setting = (setting + 1) % len(col_string)
@@ -621,21 +652,22 @@ def backlight_menu(lcd):
         sleep(0.1)
     return setting
 
+
 def power_menu(lcd):
     press_before = time.time()
     setting = 0
     setting_prev = ''
-    pow_string = ['Shutdown','Reboot','Cancel']
+    pow_string = ['Shutdown', 'Reboot', 'Cancel']
     while True:
         n = lcd.buttons()
         if setting != setting_prev:
-            set_string = message_gen(pow_string[setting],'')
-            message_return(lcd,set_string)
+            set_string = message_gen(pow_string[setting], '')
+            message_return(lcd, set_string)
             arrows(lcd)
             setting_prev = setting
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 setting = (setting + 1) % len(pow_string)
@@ -657,21 +689,23 @@ def power_menu(lcd):
         n = 0
         sleep(0.1)
 
+
 def confirm_menu(lcd):
     press_before = time.time()
     setting_confirm = 0
     setting_prev = ''
-    confirm = ["Yes","No"]
+    confirm = ["Yes", "No"]
     con = "Are you sure?"
+    confirmation = False
     while True:
         n = lcd.buttons()
         if setting_confirm != setting_prev:
-            set_string = message_gen(con,confirm[setting_confirm])
-            message_return(lcd,set_string)
+            set_string = message_gen(con, confirm[setting_confirm])
+            message_return(lcd, set_string)
             setting_prev = setting_confirm
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 setting_confirm = (setting_confirm + 1) % len(confirm)
@@ -687,8 +721,9 @@ def confirm_menu(lcd):
         sleep(0.1)
     return confirmation
 
+
 def ip_menu(lcd):
-    ip_settings = ["Wifi","Ethernet"]
+    ip_settings = ["Wifi", "Ethernet"]
     press_before = time.time()
     ip_set = 0
     ip_set_prev = ''
@@ -697,22 +732,22 @@ def ip_menu(lcd):
         if ip_set != ip_set_prev:
             n = lcd.buttons()
             if ip_set == 0:
-                p1 = subprocess.Popen(["ifconfig","wlan0"],stdout=subprocess.PIPE)
-            elif ip_set == 1:
-                p1 = subprocess.Popen(["ifconfig","eth0"],stdout=subprocess.PIPE)
-            p2 = subprocess.Popen(["grep","inet"],stdin=p1.stdout,stdout=subprocess.PIPE)
-            ip_addr = p2.stdout.read()
-            if len(ip_addr) == 0:
-                ip_addr = "Not connected"
+                p1 = subprocess.Popen(["ifconfig", "wlan0"], stdout=subprocess.PIPE)
             else:
-                ip_addr = ip_addr.split(' ')
-                ip_addr = ip_addr[11][5:]
-            ip_str = message_gen(ip_settings[ip_set],ip_addr)
-            message_return(lcd,ip_str)
+                p1 = subprocess.Popen(["ifconfig", "eth0"], stdout=subprocess.PIPE)
+            p2 = subprocess.Popen(["grep", "inet"], stdin=p1.stdout, stdout=subprocess.PIPE)
+            ip_address = p2.stdout.read()
+            if len(ip_address) == 0:
+                ip_address = "Not connected"
+            else:
+                ip_address = ip_address.split(' ')
+                ip_address = ip_address[11][5:]
+            ip_str = message_gen(ip_settings[ip_set], ip_address)
+            message_return(lcd, ip_str)
             arrows(lcd)
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 ip_set = (ip_set + 1) % len(ip_settings)
@@ -723,27 +758,34 @@ def ip_menu(lcd):
         n = 0
         sleep(0.1)
 
+
 def arrows(lcd):
     lcd.write(0xCF)
-    lcd.write(3,True)
+    lcd.write(3, True)
     lcd.write(0x80)
 
-def get_weather(number):
-    weather = pywapi.get_weather_from_weather_com('UKXX0085',units = 'metric')
-    forecasts = weather['forecasts']
-    forecast = forecasts[number]
-    return forecast
 
-def forecast_menu(lcd,number):
+def get_weather(number):
+    """
+
+    :rtype : dict
+    """
+    weather = pywapi.get_weather_from_weather_com('UKXX0085', units='metric')
+    forecasts = weather['forecasts']
+    forecast_dict = forecasts[number]
+    return forecast_dict
+
+
+def forecast_menu(lcd, number):
     press_before = time.time()
-    fore = forecast(number)
-    high_low_screen = message_gen("High: " + fore.high,"Low: " + fore.low)
-    day_text_screen = message_gen(fore.day_text,'Rain: ' + fore.day_chance_precip)
-    night_text_screen = message_gen(fore.night_text,"Rain: " + fore.night_chance_precip)
+    fore = Forecast(number)
+    high_low_screen = message_gen("High: " + fore.high, "Low: " + fore.low)
+    day_text_screen = message_gen(fore.day_text, 'Rain: ' + fore.day_chance_precip)
+    night_text_screen = message_gen(fore.night_text, "Rain: " + fore.night_chance_precip)
     if len(fore.day) > 0:
-        settings = [message_gen("Full Report",''),high_low_screen,day_text_screen,night_text_screen]
+        settings = [message_gen("Full Report", ''), high_low_screen, day_text_screen, night_text_screen]
     else:
-        settings = [message_gen("Full Report",''),high_low_screen,night_text_screen]
+        settings = [message_gen("Full Report", ''), high_low_screen, night_text_screen]
     setting = 0
     setting_prev = ''
     full_report1 = fore.full_report1
@@ -751,16 +793,16 @@ def forecast_menu(lcd,number):
     while True:
         n = lcd.buttons()
         if setting != setting_prev:
-            message_return(lcd,settings[setting])
+            message_return(lcd, settings[setting])
             arrows(lcd)
             if setting == 2 and len(fore.day) > 0:
-                sun_moon(lcd,0)
+                sun_moon(lcd, 0)
             elif setting == 2 or setting == 3:
-                sun_moon(lcd,1)
+                sun_moon(lcd, 1)
             setting_prev = setting
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 setting = (setting + 1) % len(settings)
@@ -770,33 +812,32 @@ def forecast_menu(lcd,number):
                 break
             elif n == select:
                 if setting == 0:
-                    subprocess.call(["mpc","pause"])
+                    subprocess.call(["mpc", "pause"])
                     texttospeech.play_file(full_report1)
                     texttospeech.play_file(full_report2)
-                    subprocess.call(["mpc","play"])
+                    subprocess.call(["mpc", "play"])
                     break
                 else:
                     break
         n = 0
         sleep(0.1)
-        
-    
-    
+
+
 def weather_menu(lcd):
     press_before = time.time()
-    settings = ["Today","Tomorrow"]
+    settings = ["Today", "Tomorrow"]
     setting = 0
     setting_prev = ''
     while True:
         n = lcd.buttons()
         if setting != setting_prev:
-            string = message_gen(settings[setting],'')
-            message_return(lcd,string)
+            message_string = message_gen(settings[setting], '')
+            message_return(lcd, message_string)
             arrows(lcd)
             setting_prev = setting
         if time.time() - press_before > 30:
             break
-        elif button_test(n,press_before) and time.time() - press_before > wait_time/2.0:
+        elif button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
             press_before = time.time()
             if n == up:
                 setting = (setting + 1) % len(settings)
@@ -805,20 +846,22 @@ def weather_menu(lcd):
             elif n == left or n == right:
                 break
             elif n == select:
-                forecast_menu(lcd,setting)
+                forecast_menu(lcd, setting)
                 break
         n = 0
         sleep(0.1)
-        
-def sun_moon(lcd,symbol):
-    if symbol in [0,1]:
-        symbol = symbol + 4
+
+
+def sun_moon(lcd, symbol):
+    if symbol in [0, 1]:
+        symbol += 4
         lcd.write(0x8F)
-        lcd.write(symbol,True)
+        lcd.write(symbol, True)
         lcd.write(0x80)
 
-class forecast:
-    def __init__(self,number):
+
+class Forecast:
+    def __init__(self, number):
         self.forecast = get_weather(number)
         self.high = self.forecast['high']
         self.low = self.forecast['low']
@@ -839,5 +882,6 @@ class forecast:
             self.day_chance_precip = self.night_chance_precip
         else:
             self.dow = self.forecast['day_of_week']
-        self.full_report1 = self.dow + " will be " + self.day_text + " with a " + self.day_chance_precip + " percent chance of rain."
+        self.full_report1 = self.dow + " will be " + self.day_text + " with a " \
+            + self.day_chance_precip + " percent chance of rain."
         self.full_report2 = "Temperatures will reach a high of " + self.high + " and a low of " + self.low
