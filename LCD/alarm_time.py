@@ -275,7 +275,6 @@ def mpc_screen(lcd):
             elif n == select and mpc_setting == 8:
                 type_menu(lcd)
                 break
-        n = 0
         sleep(0.1)
 
 
@@ -306,7 +305,6 @@ def sleep_menu(lcd):
                     subprocess.Popen(["/usr/local/bin/music_sleep.sh", str(60 * sleep_time)])
                 break
         sleep(0.1)
-        n = 0
 
 
 def type_menu(lcd):
@@ -340,7 +338,6 @@ def type_menu(lcd):
                 elif type_set == 0:
                     letter_menu(lcd)
                     break
-    n = 0
     sleep(0.1)
 
 
@@ -375,7 +372,6 @@ def playlist_menu(lcd):
                 mpc_load(playlists[play_set])
                 mpc_play()
                 break
-        n = 0
         sleep(0.1)
 
 
@@ -406,7 +402,6 @@ def letter_menu(lcd):
             elif n == select:
                 artist_menu(lcd, let_set)
                 break
-    n = 0
     sleep(0.1)
 
 
@@ -441,7 +436,6 @@ def artist_menu(lcd, let_set):
                     message_return(lcd, message_string)
                     sleep(2)
                 break
-    n = 0
     sleep(0.1)
 
 
@@ -474,7 +468,6 @@ def album_menu(lcd, artists, art_set):
                 mpc_add(paths[alb_set])
                 mpc_play()
                 break
-        n = 0
         sleep(0.1)
 
 
@@ -496,9 +489,7 @@ def cur_track_screen(lcd):
         if time.time() - time_track > 5:
             break
         if button_test(n, press_before) and time.time() - press_before > wait_time / 2.0:
-            press_before = time.time()
             break
-        n = 0
         sleep(0.1)
 
 
@@ -539,7 +530,6 @@ def main_menu(lcd, colour):
                 elif menu == 4:
                     ip_menu(lcd)
                     break
-        n = 0
         sleep(0.1)
     return colour
 
@@ -619,7 +609,6 @@ def alarm_set_screen(lcd):
                     set_string_prev = set_string
                     press_before = time.time()
         sleep(0.1)
-        n = 0
 
 
 def backlight_menu(lcd):
@@ -648,7 +637,6 @@ def backlight_menu(lcd):
                 break
             elif n == select:
                 break
-        n = 0
         sleep(0.1)
     return setting
 
@@ -686,7 +674,6 @@ def power_menu(lcd):
                         subprocess.call("reboot")
                 else:
                     break
-        n = 0
         sleep(0.1)
 
 
@@ -717,7 +704,6 @@ def confirm_menu(lcd):
             elif n == select and setting_confirm == 1:
                 confirmation = False
                 break
-        n = 0
         sleep(0.1)
     return confirmation
 
@@ -755,7 +741,6 @@ def ip_menu(lcd):
                 ip_set = (ip_set - 1) % len(ip_settings)
             elif n == select or n == left or n == right:
                 break
-        n = 0
         sleep(0.1)
 
 
@@ -819,7 +804,6 @@ def forecast_menu(lcd, number):
                     break
                 else:
                     break
-        n = 0
         sleep(0.1)
 
 
@@ -848,7 +832,6 @@ def weather_menu(lcd):
             elif n == select:
                 forecast_menu(lcd, setting)
                 break
-        n = 0
         sleep(0.1)
 
 
@@ -862,6 +845,10 @@ def sun_moon(lcd, symbol):
 
 class Forecast:
     def __init__(self, number):
+        """
+
+        :type self: dict
+        """
         self.forecast = get_weather(number)
         self.high = self.forecast['high']
         self.low = self.forecast['low']
