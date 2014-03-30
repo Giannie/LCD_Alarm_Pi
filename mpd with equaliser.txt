@@ -1,0 +1,41 @@
+install libasound2-plugin-equal
+
+mpd.conf:
+
+audio_output {
+	type		"alsa"
+	name		"My ALSA Device"
+#	device		"hw:0,0"	# optional
+	device		"plug:plugequal"	# optional
+	format		"44100:16:2"	# optional
+	mixer_device	"default"	# optional
+	mixer_control	"PCM"		# optional
+	mixer_index	"0"		# optional
+	
+login as mpd:
+sudo -u mpd bash
+cd
+
+nano .asoundrc:
+
+ctl.equal {
+  type equal;
+}
+
+pcm.plugequal {
+  type equal;
+  # Modify the line below if you don't
+  # want to use sound card 0.
+  slave.pcm "plughw:0,0";
+  # or if you want to use with multiple applications output to dmix
+  # slave.pcm "plug:dmix"
+}
+
+#pcm.equal {
+  # Or if you want the equalizer to be your
+  # default soundcard uncomment the following
+  # line and comment the above line.
+pcm.!default {
+  type plug;
+  slave.pcm plugequal;
+}
