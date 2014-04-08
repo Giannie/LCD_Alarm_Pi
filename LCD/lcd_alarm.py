@@ -122,6 +122,7 @@ while True:
                 press_before = time.time() + 0.5
             elif n == up:
                 lcd_on = not lcd_on
+                press_before = time.time() + 0.5
             elif n == down:
                 new_setting = alarm_time.get_time()
                 alarm_time.set_alarm(new_setting[0], new_setting[1], new_setting[2])
