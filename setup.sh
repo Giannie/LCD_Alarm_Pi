@@ -65,5 +65,5 @@ sudo update-rc.d lcd_start defaults 100
 sudo service rpcbind start
 sudo update-rc.d rpcbind defaults
 #sudo mount -a
-sudo service lcd_start.sh restart
+sudo service lcd_start restart
 #sudo service mpd restart
