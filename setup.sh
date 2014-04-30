@@ -28,7 +28,7 @@ fi
 if [ -z "$(grep i2c-dev /etc/modules)" ]; then
 	sudo sh -c "echo i2c-dev >> /etc/modules"
 fi
-sudo apt-get install mpd mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools wicd-curses libcurl4-gnutls-dev librtmp-dev mplayer htop elinks
+sudo apt-get install mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools libcurl4-gnutls-dev librtmp-dev mplayer htop elinks
 sudo pip install python-crontab
 sudo pip install wiringpi
 sudo pip install pywapi
@@ -49,21 +49,21 @@ sudo cp /home/pi/LCD_Alarm_Pi/usr\ local\ bin/* /usr/local/bin/
 sudo cp /home/pi/LCD_Alarm_Pi/etc/* /etc
 sudo update-rc.d lcd_start defaults 100
 
-sudo chown mpd /etc/mpd.conf
-sudo chgrp audio /etc/mpd.conf
+#sudo chown mpd /etc/mpd.conf
+#sudo chgrp audio /etc/mpd.conf
 
-sudo mkdir /mnt/raspbmc
-if [ -z "$(grep "192.168.0.18/devices /mnt/raspbmc" /etc/fstab)" ]; then
-	sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail,nolock,uid=1000,gid=1000 0 0\" >> /etc/fstab"
-fi
-a="$(grep password .raspbmc_auth)"
-if [ ${#a} -lt 10 ]; then
-	echo "Enter samba password:"
-	read -s pass
-	printf username=pi'\n'password=$pass > .raspbmc_auth
-fi
+#sudo mkdir /mnt/raspbmc
+#if [ -z "$(grep "192.168.0.18/devices /mnt/raspbmc" /etc/fstab)" ]; then
+#	sudo sh -c "echo \"//192.168.0.18/devices /mnt/raspbmc cifs credentials=/home/pi/.raspbmc_auth,nofail,nolock,uid=1000,gid=1000 0 0\" >> /etc/fstab"
+#fi
+#a="$(grep password .raspbmc_auth)"
+#if [ ${#a} -lt 10 ]; then
+#	echo "Enter samba password:"
+#	read -s pass
+#	printf username=pi'\n'password=$pass > .raspbmc_auth
+#fi
 sudo service rpcbind start
 sudo update-rc.d rpcbind defaults
-sudo mount -a
+#sudo mount -a
 sudo service lcd_start.sh restart
-sudo service mpd restart
+#sudo service mpd restart
