@@ -56,7 +56,7 @@ def message_return(lcd, message_string):
 
 def get_time():
     cron = CronTab('pi')
-    job = cron.find_comment('Alarm')[0]
+    job = cron.find_comment('Alarm').next()
     alarm_hour = int(str(job.hour))
     alarm_min = int(str(job.minute))
     return [alarm_hour, alarm_min, not (job.is_enabled())]
@@ -101,7 +101,7 @@ def alarm_time(crontab, line2):
         return [output, line2]
     else:
         cron = CronTab('pi')
-        job = cron.find_comment('Alarm')[0]
+        job = cron.find_comment('Alarm').next()
 
         alarm_hour = add_zero(str(job.hour))
         alarm_min = add_zero(str(job.minute))
@@ -121,7 +121,7 @@ def alarm_time(crontab, line2):
 
 def set_alarm(hour, minute, on):
     cron = CronTab('pi')
-    job = cron.find_comment('Alarm')[0]
+    job = cron.find_comment('Alarm').next()
 
     job.clear()
     job.hour.on(hour)
