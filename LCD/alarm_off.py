@@ -1,8 +1,4 @@
-from crontab import CronTab
+from alarm_time import get_time, set_alarm
 
-cron = CronTab('pi')
-job = cron.find_comment('Alarm')[0]
-
-job.enable(False)
-
-cron.write()
+new_setting = alarm_time.get_time()
+alarm_time.set_alarm(new_setting[0], new_setting[1], new_setting[2])
