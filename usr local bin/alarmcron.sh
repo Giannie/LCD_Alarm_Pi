@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -z "$(echo $PATH | grep /usr/local/bin)" ]; then
+    PATH=/usr/local/bin:$PATH
+fi
+
 sudo mount -a
 /usr/local/bin/plug_on.sh
 /usr/local/bin/plug_on.sh
