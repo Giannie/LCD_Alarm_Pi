@@ -28,6 +28,7 @@ fi
 if [ -z "$(grep i2c-dev /etc/modules)" ]; then
 	sudo sh -c "echo i2c-dev >> /etc/modules"
 fi
+sudo apt-get update
 sudo apt-get install mpc python-dev python-rpi.gpio python-pip python-smbus i2c-tools libcurl4-gnutls-dev librtmp-dev mplayer htop elinks
 sudo pip install python-crontab
 sudo pip install wiringpi
